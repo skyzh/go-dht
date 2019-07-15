@@ -8,6 +8,7 @@ import (
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
 	"log"
+	"math/rand"
 	"net"
 	"sort"
 	"testing"
@@ -60,12 +61,14 @@ func run_server(s *grpc.Server, server *ChordServer, done chan bool) {
 }
 
 func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
+	log.Printf("making clusters of %d nodes", n)
 	done := make(chan bool)
 	var chord_servers []*ChordServer
 	var grpc_servers [] *grpc.Server
 	var addr []string
+	addr_base := rand.Intn(1000) + 50000
 	for i := 0; i < n; i++ {
-		addr = append(addr, fmt.Sprintf("127.0.0.1:%v", i+40000))
+		addr = append(addr, fmt.Sprintf("127.0.0.1:%v", i+addr_base))
 	}
 	sort.SliceStable(addr, func(i, j int) bool {
 		return bytes.Compare(generate_sha1(addr[i]), generate_sha1(addr[j])) < 0
@@ -78,13 +81,16 @@ func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
 	for i := 0; i < n; i++ {
 		<-done
 	}
+	log.Printf("... done")
 	return grpc_servers, chord_servers
 }
 
 func TeardownChordCluster(grpc_servers []*grpc.Server, chord_servers []*ChordServer) {
+	log.Printf("tearing down")
 	for i := range grpc_servers {
 		grpc_servers[i].Stop()
 	}
+	log.Printf("... done")
 }
 
 func chord_system_test_join(g *G, n int) {
@@ -121,7 +127,7 @@ func chord_system_test_stabilization(g *G, n int) {
 			}
 		}
 	}
-	for k := 0; k < n * 3; k++ {
+	for k := 0; k < n; k++ {
 		for i := range chord_servers {
 			err := chord_servers[i].Stabilize(ctx)
 			if err != nil {
@@ -131,6 +137,10 @@ func chord_system_test_stabilization(g *G, n int) {
 	}
 	for i := range chord_servers {
 		next_i := (i + 1) % len(chord_servers)
+		g.Assert(chord_servers[i].successor() == nil).IsFalse()
+		g.Assert(chord_servers[i].predecessor == nil).IsFalse()
+		g.Assert(chord_servers[next_i].successor() == nil).IsFalse()
+		g.Assert(chord_servers[next_i].predecessor == nil).IsFalse()
 		g.Assert(bytes.Equal(chord_servers[next_i].predecessor.id, chord_servers[i].self.id)).IsTrue()
 		g.Assert(bytes.Equal(chord_servers[i].successor().id, chord_servers[next_i].self.id)).IsTrue()
 	}
@@ -145,13 +155,11 @@ func TestChordSystem(t *testing.T) {
 
 	g := Goblin(t)
 
-
 	g.Describe("node join", func() {
 		g.It("should join a 10-node network", func() {
 			chord_system_test_join(g, 10)
 		})
 		g.It("should join a 50-node network", func() {
-			g.Timeout(time.Second * 60)
 			chord_system_test_join(g, 50)
 		})
 	})
@@ -161,7 +169,7 @@ func TestChordSystem(t *testing.T) {
 			chord_system_test_stabilization(g, 10)
 		})
 		g.It("should stabilize a 50-node network", func() {
-			g.Timeout(time.Second * 60)
+			g.Timeout(time.Second * 30)
 			chord_system_test_stabilization(g, 50)
 		})
 	})
