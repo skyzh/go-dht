@@ -30,21 +30,21 @@ func NewChordServer(addr string) *ChordServer {
 		self,
 		nil,
 		self,
-		make([]*ChordNode, 0),
+		nil,
 		&sync.Mutex{},
 	}
 }
 
-func (s *ChordServer) FindSuccessor(ctx context.Context, in *pb.FindSuccessorRequest) (*pb.FindSuccessorReply, error) {
+func (s *ChordServer) FindSuccessor(ctx context.Context, in *pb.FindSuccessorRequest) (*pb.Node, error) {
 	id := in.Id
 	if in_range(id, s.self.id, s.successor.id) {
-		return &pb.FindSuccessorReply{Id: s.successor.id, Addr: s.successor.address}, nil
+		return &pb.Node{Id: s.successor.id, Addr: s.successor.address}, nil
 	} else {
 		node, err := s.successor.FindSuccessor(ctx, in.Id)
 		if err != nil {
 			return nil, err
 		}
-		return &pb.FindSuccessorReply{Id: node.id, Addr: node.address}, nil
+		return &pb.Node{Id: node.id, Addr: node.address}, nil
 	}
 }
 
@@ -78,6 +78,10 @@ func (s *ChordServer) FixFingers(ctx context.Context) error {
 
 func (s *ChordServer) CheckPredecessor(ctx context.Context) error {
 	return nil
+}
+
+func (s *ChordServer) ClosestPrecedingNode(ctx context.Context, id []byte) (*ChordNode, error) {
+	return nil, nil
 }
 
 func (n *ChordNode) FindSuccessor(ctx context.Context, id []byte) (*ChordNode, error) {

@@ -8,7 +8,7 @@ message FindSuccessorRequest {
     bytes id = 1;
 }
 
-message FindSuccessorReply {
+message Node {
     bytes id = 1;
     string addr = 2;
 }
@@ -61,7 +61,7 @@ message StoreReply {
 }
 
 service Chord {
-    rpc FindSuccessor (FindSuccessorRequest) returns (FindSuccessorReply) {
+    rpc FindSuccessor (FindSuccessorRequest) returns (Node) {
     }
 
     rpc Notify (NotifyRequest) returns (Result) {
