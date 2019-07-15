@@ -13,7 +13,8 @@ import (
 	"time"
 )
 
-var test_id = []byte("abcdeabcdeabcdeabcde")
+var test_addr = "abcdeabcdeabcdeabcde"
+var test_id = []byte(test_addr)
 
 func TestChordNode(t *testing.T) {
 	g := Goblin(t)
@@ -35,6 +36,17 @@ func TestChordRPC(t *testing.T) {
 			node, err := server.FindSuccessor(context.Background(), &pb.FindSuccessorRequest{Id: test_id})
 			g.Assert(err == nil).IsTrue()
 			g.Assert(node.Id).Equal(server.self.id)
+		})
+		g.It("should return no predecessor when bootstrap", func() {
+			node, err := server.FindPredecessor(context.Background(), &pb.Void{})
+			g.Assert(err == nil).IsFalse()
+			g.Assert(node == nil).IsTrue()
+		})
+		g.It("should return predecessor", func() {
+			server.predecessor = &ChordNode{id: test_id, address: test_addr}
+			node, err := server.FindPredecessor(context.Background(), &pb.Void{})
+			g.Assert(err == nil).IsTrue()
+			g.Assert(node.Addr).Equal(test_addr)
 		})
 	})
 }
@@ -82,7 +94,7 @@ func TestChordSystem(t *testing.T) {
 	g := Goblin(t)
 
 	g.Describe("node join", func() {
-		g.It("should join 10-node network", func() {
+		g.It("should join a 10-node network", func() {
 			grpc_servers, chord_servers := MakeChordCluster(10)
 			ctx, cancel := context.WithCancel(context.Background())
 			for i := range chord_servers {

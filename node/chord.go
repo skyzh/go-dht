@@ -1,7 +1,9 @@
 package node
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
 	"log"
@@ -37,13 +39,19 @@ func NewChordServer(addr string) *ChordServer {
 
 func (s *ChordServer) FindSuccessor(ctx context.Context, in *pb.FindSuccessorRequest) (*pb.Node, error) {
 	id := in.Id
+	s.mux.Lock()
 	if in_range(id, s.self.id, s.successor.id) {
+		defer s.mux.Unlock()
 		return &pb.Node{Id: s.successor.id, Addr: s.successor.address}, nil
 	} else {
-		node, err := s.successor.FindSuccessor(ctx, in.Id)
+		id := in.Id
+		s.mux.Unlock()
+		node, err := s.successor.FindSuccessor(ctx, id)
 		if err != nil {
 			return nil, err
 		}
+		s.mux.Lock()
+		defer s.mux.Unlock()
 		return &pb.Node{Id: node.id, Addr: node.address}, nil
 	}
 }
@@ -51,9 +59,10 @@ func (s *ChordServer) FindSuccessor(ctx context.Context, in *pb.FindSuccessorReq
 func (s *ChordServer) Join(ctx context.Context, node *ChordNode) error {
 	s.mux.Lock()
 	s.predecessor = nil
+	id := s.self.id
 	s.mux.Unlock()
 
-	node, err := node.FindSuccessor(ctx, s.self.id)
+	node, err := node.FindSuccessor(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -65,11 +74,27 @@ func (s *ChordServer) Join(ctx context.Context, node *ChordNode) error {
 }
 
 func (s *ChordServer) Stabilize(ctx context.Context) error {
+
 	return nil
 }
 
 func (s *ChordServer) Notify(ctx context.Context, in *pb.NotifyRequest) (*pb.Result, error) {
-	return nil, nil
+	s.mux.Lock()
+	defer s.mux.Unlock()
+	if s.predecessor == nil ||
+		in_range(in.Id, s.predecessor.id, s.self.id) && !bytes.Equal(in.Id, s.self.id) {
+		s.predecessor = &ChordNode{in.Id, in.Addr}
+	}
+	return &pb.Result{Result: "success"}, nil
+}
+
+func (s *ChordServer) FindPredecessor(ctx context.Context, in *pb.Void) (*pb.Node, error) {
+	s.mux.Lock()
+	defer s.mux.Unlock()
+	if s.predecessor == nil {
+		return nil, errors.New("no predecessor")
+	}
+	return &pb.Node{Id: s.predecessor.id, Addr: s.predecessor.address}, nil
 }
 
 func (s *ChordServer) FixFingers(ctx context.Context) error {
