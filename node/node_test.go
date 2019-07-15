@@ -1,4 +1,4 @@
-package go_dht
+package node
 
 import (
 	. "github.com/franela/goblin"

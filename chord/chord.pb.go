@@ -102,24 +102,108 @@ func (m *SuccessorReply) GetId() string {
 	return ""
 }
 
+type QueryRequest struct {
+	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *QueryRequest) Reset()         { *m = QueryRequest{} }
+func (m *QueryRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryRequest) ProtoMessage()    {}
+func (*QueryRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_541dae51990542ec, []int{2}
+}
+
+func (m *QueryRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_QueryRequest.Unmarshal(m, b)
+}
+func (m *QueryRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_QueryRequest.Marshal(b, m, deterministic)
+}
+func (m *QueryRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRequest.Merge(m, src)
+}
+func (m *QueryRequest) XXX_Size() int {
+	return xxx_messageInfo_QueryRequest.Size(m)
+}
+func (m *QueryRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryRequest proto.InternalMessageInfo
+
+func (m *QueryRequest) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+type QueryReply struct {
+	Value                string   `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *QueryReply) Reset()         { *m = QueryReply{} }
+func (m *QueryReply) String() string { return proto.CompactTextString(m) }
+func (*QueryReply) ProtoMessage()    {}
+func (*QueryReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_541dae51990542ec, []int{3}
+}
+
+func (m *QueryReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_QueryReply.Unmarshal(m, b)
+}
+func (m *QueryReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_QueryReply.Marshal(b, m, deterministic)
+}
+func (m *QueryReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryReply.Merge(m, src)
+}
+func (m *QueryReply) XXX_Size() int {
+	return xxx_messageInfo_QueryReply.Size(m)
+}
+func (m *QueryReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryReply proto.InternalMessageInfo
+
+func (m *QueryReply) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*SuccessorRequest)(nil), "chord.SuccessorRequest")
 	proto.RegisterType((*SuccessorReply)(nil), "chord.SuccessorReply")
+	proto.RegisterType((*QueryRequest)(nil), "chord.QueryRequest")
+	proto.RegisterType((*QueryReply)(nil), "chord.QueryReply")
 }
 
 func init() { proto.RegisterFile("chord.proto", fileDescriptor_541dae51990542ec) }
 
 var fileDescriptor_541dae51990542ec = []byte{
-	// 134 bytes of a gzipped FileDescriptorProto
+	// 198 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4e, 0xce, 0xc8, 0x2f,
 	0x4a, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x73, 0x94, 0x14, 0xb8, 0x04, 0x82,
 	0x4b, 0x93, 0x93, 0x53, 0x8b, 0x8b, 0xf3, 0x8b, 0x82, 0x52, 0x0b, 0x4b, 0x53, 0x8b, 0x4b, 0x84,
 	0x78, 0xb8, 0x18, 0xb3, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x18, 0xb3, 0x95, 0x14, 0xb8,
 	0xf8, 0x90, 0x54, 0x14, 0xe4, 0x54, 0x0a, 0xf1, 0x71, 0x31, 0x65, 0xa6, 0x40, 0x15, 0x30, 0x65,
-	0xa6, 0x18, 0x79, 0x71, 0xb1, 0x3a, 0x83, 0x0c, 0x13, 0x72, 0xe4, 0xe2, 0x75, 0xcb, 0xcc, 0x4b,
-	0x81, 0x2b, 0x17, 0x12, 0xd7, 0x83, 0x58, 0x89, 0x6e, 0x85, 0x94, 0x28, 0xa6, 0x44, 0x41, 0x4e,
-	0xa5, 0x12, 0x43, 0x12, 0x1b, 0xd8, 0x75, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x6b, 0xcc,
-	0x5f, 0xd9, 0xac, 0x00, 0x00, 0x00,
+	0x82, 0xcc, 0xe0, 0x09, 0x2c, 0x4d, 0x2d, 0xaa, 0x84, 0xe9, 0x17, 0xe0, 0x62, 0xce, 0x4e, 0xad,
+	0x84, 0x2a, 0x00, 0x31, 0x95, 0x94, 0xb8, 0xb8, 0xa0, 0x2a, 0x40, 0xfa, 0x45, 0xb8, 0x58, 0xcb,
+	0x12, 0x73, 0x4a, 0x53, 0xa1, 0x2a, 0x20, 0x1c, 0x23, 0x2f, 0x2e, 0x56, 0x67, 0x90, 0x93, 0x84,
+	0x1c, 0xb9, 0x78, 0xdd, 0x32, 0xf3, 0x52, 0xe0, 0x96, 0x0a, 0x89, 0xeb, 0x41, 0x1c, 0x8e, 0xee,
+	0x50, 0x29, 0x51, 0x4c, 0x89, 0x82, 0x9c, 0x4a, 0x25, 0x06, 0x23, 0x0b, 0x2e, 0x66, 0x17, 0x8f,
+	0x10, 0x21, 0x43, 0x2e, 0x56, 0xb0, 0xb5, 0x42, 0xc2, 0x50, 0x85, 0xc8, 0xce, 0x94, 0x12, 0x44,
+	0x15, 0x04, 0xeb, 0x4c, 0x62, 0x03, 0x87, 0x8e, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x38, 0xc6,
+	0xd2, 0xb7, 0x2c, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -196,6 +280,78 @@ var _Chord_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindSuccessor",
 			Handler:    _Chord_FindSuccessor_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "chord.proto",
+}
+
+// DHTClient is the client API for DHT service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type DHTClient interface {
+	Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryReply, error)
+}
+
+type dHTClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewDHTClient(cc *grpc.ClientConn) DHTClient {
+	return &dHTClient{cc}
+}
+
+func (c *dHTClient) Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryReply, error) {
+	out := new(QueryReply)
+	err := c.cc.Invoke(ctx, "/chord.DHT/Query", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DHTServer is the server API for DHT service.
+type DHTServer interface {
+	Query(context.Context, *QueryRequest) (*QueryReply, error)
+}
+
+// UnimplementedDHTServer can be embedded to have forward compatible implementations.
+type UnimplementedDHTServer struct {
+}
+
+func (*UnimplementedDHTServer) Query(ctx context.Context, req *QueryRequest) (*QueryReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Query not implemented")
+}
+
+func RegisterDHTServer(s *grpc.Server, srv DHTServer) {
+	s.RegisterService(&_DHT_serviceDesc, srv)
+}
+
+func _DHT_Query_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DHTServer).Query(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chord.DHT/Query",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DHTServer).Query(ctx, req.(*QueryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _DHT_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "chord.DHT",
+	HandlerType: (*DHTServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Query",
+			Handler:    _DHT_Query_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
