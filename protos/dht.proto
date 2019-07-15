@@ -13,11 +13,6 @@ message Node {
     string addr = 2;
 }
 
-message NotifyRequest {
-    bytes id = 1;
-    string addr = 2;
-}
-
 // DHT Common RPCs
 
 message GetRequest {
@@ -67,10 +62,13 @@ service Chord {
     rpc FindSuccessor (FindSuccessorRequest) returns (Node) {
     }
 
-    rpc Notify (NotifyRequest) returns (Result) {
+    rpc Notify (Node) returns (Result) {
     }
 
     rpc FindPredecessor (Void) returns (Node) {
+    }
+
+    rpc Ping(Node) returns (Void) {
     }
 }
 
@@ -91,8 +89,10 @@ service Kad {
 service DHT {
     rpc Get (GetRequest) returns (Result) {
     }
+
     rpc Put (PutRequest) returns (Result) {
     }
+
     rpc Del (DelRequest) returns (Result) {
     }
 }

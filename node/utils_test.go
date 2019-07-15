@@ -2,6 +2,7 @@ package node
 
 import (
 	. "github.com/franela/goblin"
+	"math/big"
 	"testing"
 )
 
@@ -15,13 +16,13 @@ func TestUtils(t *testing.T) {
 		})
 	})
 	g.Describe("in_range", func() {
-		g.It("should not include left point", func() {
+		g.It("should not include left bound", func() {
 			a := []byte("11111111111111111111")
 			c := a
 			b := []byte("22222222222222222222")
 			g.Assert(in_range(c, a, b)).IsFalse()
 		})
-		g.It("should include right point", func() {
+		g.It("should include right bound", func() {
 			a := []byte("11111111111111111111")
 			b := []byte("22222222222222222222")
 			c := b
@@ -38,6 +39,45 @@ func TestUtils(t *testing.T) {
 			a := []byte("11111111111111111111")
 			c := []byte("11111111111111111111")
 			g.Assert(in_range(c, a, b)).IsTrue()
+		})
+	})
+	g.Describe("in_range_exclude", func() {
+		g.It("should not include left bound", func() {
+			a := []byte("11111111111111111111")
+			c := a
+			b := []byte("22222222222222222222")
+			g.Assert(in_range_exclude(c, a, b)).IsFalse()
+		})
+		g.It("should not include right bound", func() {
+			a := []byte("11111111111111111111")
+			b := []byte("22222222222222222222")
+			c := b
+			g.Assert(in_range_exclude(c, a, b)).IsFalse()
+		})
+		g.It("should process cycle", func() {
+			b := []byte("11111111111111111111")
+			a := []byte("22222222222222222222")
+			c := []byte("33333333333333333333")
+			g.Assert(in_range_exclude(c, a, b)).IsTrue()
+		})
+	})
+	g.Describe("byte_add_power_2", func() {
+		g.It("should add correctly", func() {
+			a := big.NewInt(233)
+			b := big.NewInt(0)
+			b.SetBytes(byte_add_power_2(a.Bytes(), 10))
+			g.Assert(b.Cmp(big.NewInt(233+1024)) == 0).IsTrue()
+			b.SetBytes(byte_add_power_2(a.Bytes(), 16))
+			g.Assert(b.Cmp(big.NewInt(233+65536)) == 0).IsTrue()
+		})
+		g.It("should add beyond bound", func() {
+			a := big.NewInt(233)
+			b := big.NewInt(0)
+			b.SetBytes(byte_add_power_2(a.Bytes(), M+2))
+			g.Assert(b.Cmp(big.NewInt(233)) == 0).IsTrue()
+			a.Lsh(big.NewInt(1), M-1)
+			b.SetBytes(byte_add_power_2(a.Bytes(), M-1))
+			g.Assert(b.Cmp(big.NewInt(0)) == 0).IsTrue()
 		})
 	})
 }

@@ -110,53 +110,6 @@ func (m *Node) GetAddr() string {
 	return ""
 }
 
-type NotifyRequest struct {
-	Id                   []byte   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Addr                 string   `protobuf:"bytes,2,opt,name=addr,proto3" json:"addr,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *NotifyRequest) Reset()         { *m = NotifyRequest{} }
-func (m *NotifyRequest) String() string { return proto.CompactTextString(m) }
-func (*NotifyRequest) ProtoMessage()    {}
-func (*NotifyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{2}
-}
-
-func (m *NotifyRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_NotifyRequest.Unmarshal(m, b)
-}
-func (m *NotifyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_NotifyRequest.Marshal(b, m, deterministic)
-}
-func (m *NotifyRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NotifyRequest.Merge(m, src)
-}
-func (m *NotifyRequest) XXX_Size() int {
-	return xxx_messageInfo_NotifyRequest.Size(m)
-}
-func (m *NotifyRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_NotifyRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_NotifyRequest proto.InternalMessageInfo
-
-func (m *NotifyRequest) GetId() []byte {
-	if m != nil {
-		return m.Id
-	}
-	return nil
-}
-
-func (m *NotifyRequest) GetAddr() string {
-	if m != nil {
-		return m.Addr
-	}
-	return ""
-}
-
 type GetRequest struct {
 	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -168,7 +121,7 @@ func (m *GetRequest) Reset()         { *m = GetRequest{} }
 func (m *GetRequest) String() string { return proto.CompactTextString(m) }
 func (*GetRequest) ProtoMessage()    {}
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{3}
+	return fileDescriptor_616a434b24c97ff4, []int{2}
 }
 
 func (m *GetRequest) XXX_Unmarshal(b []byte) error {
@@ -206,7 +159,7 @@ func (m *PutRequest) Reset()         { *m = PutRequest{} }
 func (m *PutRequest) String() string { return proto.CompactTextString(m) }
 func (*PutRequest) ProtoMessage()    {}
 func (*PutRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{4}
+	return fileDescriptor_616a434b24c97ff4, []int{3}
 }
 
 func (m *PutRequest) XXX_Unmarshal(b []byte) error {
@@ -237,7 +190,7 @@ func (m *DelRequest) Reset()         { *m = DelRequest{} }
 func (m *DelRequest) String() string { return proto.CompactTextString(m) }
 func (*DelRequest) ProtoMessage()    {}
 func (*DelRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{5}
+	return fileDescriptor_616a434b24c97ff4, []int{4}
 }
 
 func (m *DelRequest) XXX_Unmarshal(b []byte) error {
@@ -269,7 +222,7 @@ func (m *Result) Reset()         { *m = Result{} }
 func (m *Result) String() string { return proto.CompactTextString(m) }
 func (*Result) ProtoMessage()    {}
 func (*Result) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{6}
+	return fileDescriptor_616a434b24c97ff4, []int{5}
 }
 
 func (m *Result) XXX_Unmarshal(b []byte) error {
@@ -307,7 +260,7 @@ func (m *Void) Reset()         { *m = Void{} }
 func (m *Void) String() string { return proto.CompactTextString(m) }
 func (*Void) ProtoMessage()    {}
 func (*Void) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{7}
+	return fileDescriptor_616a434b24c97ff4, []int{6}
 }
 
 func (m *Void) XXX_Unmarshal(b []byte) error {
@@ -338,7 +291,7 @@ func (m *PingRequest) Reset()         { *m = PingRequest{} }
 func (m *PingRequest) String() string { return proto.CompactTextString(m) }
 func (*PingRequest) ProtoMessage()    {}
 func (*PingRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{8}
+	return fileDescriptor_616a434b24c97ff4, []int{7}
 }
 
 func (m *PingRequest) XXX_Unmarshal(b []byte) error {
@@ -369,7 +322,7 @@ func (m *PingReply) Reset()         { *m = PingReply{} }
 func (m *PingReply) String() string { return proto.CompactTextString(m) }
 func (*PingReply) ProtoMessage()    {}
 func (*PingReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{9}
+	return fileDescriptor_616a434b24c97ff4, []int{8}
 }
 
 func (m *PingReply) XXX_Unmarshal(b []byte) error {
@@ -400,7 +353,7 @@ func (m *FindNodeRequest) Reset()         { *m = FindNodeRequest{} }
 func (m *FindNodeRequest) String() string { return proto.CompactTextString(m) }
 func (*FindNodeRequest) ProtoMessage()    {}
 func (*FindNodeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{10}
+	return fileDescriptor_616a434b24c97ff4, []int{9}
 }
 
 func (m *FindNodeRequest) XXX_Unmarshal(b []byte) error {
@@ -431,7 +384,7 @@ func (m *FindNodeReply) Reset()         { *m = FindNodeReply{} }
 func (m *FindNodeReply) String() string { return proto.CompactTextString(m) }
 func (*FindNodeReply) ProtoMessage()    {}
 func (*FindNodeReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{11}
+	return fileDescriptor_616a434b24c97ff4, []int{10}
 }
 
 func (m *FindNodeReply) XXX_Unmarshal(b []byte) error {
@@ -462,7 +415,7 @@ func (m *FindValueRequest) Reset()         { *m = FindValueRequest{} }
 func (m *FindValueRequest) String() string { return proto.CompactTextString(m) }
 func (*FindValueRequest) ProtoMessage()    {}
 func (*FindValueRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{12}
+	return fileDescriptor_616a434b24c97ff4, []int{11}
 }
 
 func (m *FindValueRequest) XXX_Unmarshal(b []byte) error {
@@ -493,7 +446,7 @@ func (m *FindValueReply) Reset()         { *m = FindValueReply{} }
 func (m *FindValueReply) String() string { return proto.CompactTextString(m) }
 func (*FindValueReply) ProtoMessage()    {}
 func (*FindValueReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{13}
+	return fileDescriptor_616a434b24c97ff4, []int{12}
 }
 
 func (m *FindValueReply) XXX_Unmarshal(b []byte) error {
@@ -524,7 +477,7 @@ func (m *StoreRequest) Reset()         { *m = StoreRequest{} }
 func (m *StoreRequest) String() string { return proto.CompactTextString(m) }
 func (*StoreRequest) ProtoMessage()    {}
 func (*StoreRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{14}
+	return fileDescriptor_616a434b24c97ff4, []int{13}
 }
 
 func (m *StoreRequest) XXX_Unmarshal(b []byte) error {
@@ -555,7 +508,7 @@ func (m *StoreReply) Reset()         { *m = StoreReply{} }
 func (m *StoreReply) String() string { return proto.CompactTextString(m) }
 func (*StoreReply) ProtoMessage()    {}
 func (*StoreReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{15}
+	return fileDescriptor_616a434b24c97ff4, []int{14}
 }
 
 func (m *StoreReply) XXX_Unmarshal(b []byte) error {
@@ -579,7 +532,6 @@ var xxx_messageInfo_StoreReply proto.InternalMessageInfo
 func init() {
 	proto.RegisterType((*FindSuccessorRequest)(nil), "protos.FindSuccessorRequest")
 	proto.RegisterType((*Node)(nil), "protos.Node")
-	proto.RegisterType((*NotifyRequest)(nil), "protos.NotifyRequest")
 	proto.RegisterType((*GetRequest)(nil), "protos.GetRequest")
 	proto.RegisterType((*PutRequest)(nil), "protos.PutRequest")
 	proto.RegisterType((*DelRequest)(nil), "protos.DelRequest")
@@ -598,34 +550,34 @@ func init() {
 func init() { proto.RegisterFile("dht.proto", fileDescriptor_616a434b24c97ff4) }
 
 var fileDescriptor_616a434b24c97ff4 = []byte{
-	// 429 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x93, 0xd1, 0x8e, 0xd2, 0x40,
-	0x14, 0x86, 0x29, 0xed, 0x36, 0xf6, 0x6c, 0xe9, 0xb2, 0xc7, 0xdd, 0x95, 0x34, 0xc6, 0x90, 0xb9,
-	0x30, 0x44, 0x12, 0x54, 0xb8, 0xd5, 0x78, 0x21, 0x11, 0x13, 0x13, 0xd2, 0x14, 0xc3, 0x3d, 0x32,
-	0xa3, 0x34, 0x36, 0x0c, 0xb6, 0xd3, 0x8b, 0xbe, 0x83, 0x4f, 0xe2, 0xab, 0xf9, 0x12, 0x66, 0x3a,
-	0x9d, 0x76, 0x84, 0xee, 0x15, 0x73, 0xce, 0xff, 0xff, 0xa7, 0x33, 0xdf, 0x0c, 0xe0, 0xd1, 0x83,
-	0x98, 0x9d, 0x32, 0x2e, 0x38, 0xba, 0xd5, 0x4f, 0x4e, 0x5e, 0xc2, 0xdd, 0xa7, 0xe4, 0x48, 0x37,
-	0xc5, 0x7e, 0xcf, 0xf2, 0x9c, 0x67, 0x31, 0xfb, 0x55, 0xb0, 0x5c, 0x60, 0x00, 0xfd, 0x84, 0x8e,
-	0xac, 0xb1, 0x35, 0xf1, 0xe3, 0x7e, 0x42, 0xc9, 0x2b, 0x70, 0xd6, 0x9c, 0xb2, 0xf3, 0x3e, 0x22,
-	0x38, 0x3b, 0x4a, 0xb3, 0x51, 0x7f, 0x6c, 0x4d, 0xbc, 0xb8, 0x5a, 0x93, 0x05, 0x0c, 0xd6, 0x5c,
-	0x24, 0xdf, 0xcb, 0x47, 0x86, 0x75, 0x86, 0x5e, 0x00, 0xac, 0x98, 0xd0, 0x89, 0x21, 0xd8, 0x3f,
-	0x59, 0x59, 0x45, 0xbc, 0x58, 0x2e, 0x89, 0x0f, 0x10, 0x15, 0x5a, 0x97, 0xd5, 0x92, 0xa5, 0xba,
-	0x1a, 0x83, 0x1b, 0xb3, 0xbc, 0x48, 0x05, 0x3e, 0x80, 0x9b, 0x55, 0xab, 0x3a, 0x5a, 0x57, 0xc4,
-	0x05, 0x67, 0xcb, 0x13, 0x4a, 0x06, 0x70, 0x1d, 0x25, 0xc7, 0x1f, 0x3a, 0x78, 0x0d, 0x9e, 0x2a,
-	0x4f, 0x69, 0x49, 0x6e, 0xe1, 0x46, 0xa2, 0x90, 0xc7, 0xd4, 0xfa, 0x0d, 0x0c, 0xda, 0x96, 0xf4,
-	0x20, 0x0c, 0x65, 0x63, 0xbb, 0x4b, 0x8b, 0xc6, 0x34, 0x84, 0xc0, 0xe8, 0x49, 0x57, 0x00, 0xfe,
-	0x46, 0xf0, 0x8c, 0x19, 0xbb, 0xad, 0xeb, 0x53, 0x5a, 0xce, 0xff, 0x58, 0x70, 0xf5, 0xf1, 0xc0,
-	0x33, 0x8a, 0xef, 0xd5, 0xf8, 0x06, 0x3e, 0x3e, 0x57, 0xb7, 0x93, 0xcf, 0xba, 0xee, 0x24, 0xf4,
-	0xb5, 0x2a, 0xf7, 0x43, 0x7a, 0xf8, 0x16, 0x5c, 0xc5, 0x19, 0xef, 0x5b, 0xc5, 0xe0, 0x1e, 0x06,
-	0xba, 0xad, 0xe8, 0x90, 0x1e, 0xbe, 0x56, 0x67, 0x8c, 0x32, 0x46, 0x59, 0xfd, 0xcd, 0x66, 0xaa,
-	0x04, 0x74, 0xfe, 0x8d, 0xf9, 0x5f, 0x0b, 0xec, 0x2f, 0x3b, 0x8a, 0x6f, 0xc0, 0x91, 0xa4, 0xf0,
-	0xa9, 0xd6, 0x0d, 0x8c, 0xe1, 0xed, 0xff, 0x4d, 0x89, 0xa0, 0x87, 0xef, 0xe0, 0x89, 0x66, 0x87,
-	0xcf, 0xcc, 0x73, 0x19, 0x80, 0xc3, 0xfb, 0x4b, 0x41, 0xa5, 0x3f, 0x80, 0xd7, 0x40, 0xc5, 0x91,
-	0xe9, 0x32, 0xd9, 0x87, 0x0f, 0x1d, 0x8a, 0x1a, 0xb0, 0x80, 0xab, 0x8a, 0x39, 0xde, 0x69, 0x8b,
-	0x79, 0x25, 0x21, 0x9e, 0x75, 0xab, 0xd0, 0xfc, 0xb7, 0x05, 0xf6, 0xf2, 0xf3, 0x57, 0x9c, 0x82,
-	0xbd, 0x62, 0x02, 0x1b, 0x53, 0xfb, 0x32, 0x3b, 0x98, 0x4e, 0xc1, 0x8e, 0x0a, 0xc3, 0xdc, 0x3e,
-	0xd3, 0x6e, 0xf3, 0x92, 0xa5, 0xad, 0xb9, 0x7d, 0xc5, 0x97, 0xe6, 0x6f, 0xea, 0x4f, 0xba, 0xf8,
-	0x17, 0x00, 0x00, 0xff, 0xff, 0x7b, 0x13, 0x8a, 0x76, 0xb8, 0x03, 0x00, 0x00,
+	// 425 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x93, 0xd1, 0x8a, 0xd3, 0x40,
+	0x14, 0x86, 0x93, 0x26, 0x1b, 0xcc, 0xd9, 0x6c, 0xb6, 0x7b, 0x5c, 0xd7, 0x12, 0x44, 0xca, 0x20,
+	0x52, 0x5c, 0xa8, 0xd2, 0xde, 0x2a, 0x5e, 0x58, 0xac, 0x20, 0x94, 0x90, 0x4a, 0xef, 0x6b, 0x67,
+	0xb4, 0xc1, 0xd0, 0xa9, 0xc9, 0xe4, 0x22, 0xef, 0xe0, 0x7b, 0xf9, 0x30, 0xbe, 0x84, 0x4c, 0x26,
+	0x93, 0x4c, 0xdb, 0x5c, 0x75, 0xce, 0xf9, 0xff, 0xff, 0x74, 0xe6, 0x9b, 0x09, 0xf8, 0x74, 0x2f,
+	0xa6, 0xc7, 0x9c, 0x0b, 0x8e, 0x5e, 0xfd, 0x53, 0x90, 0xd7, 0x70, 0xff, 0x39, 0x3d, 0xd0, 0x75,
+	0xb9, 0xdb, 0xb1, 0xa2, 0xe0, 0x79, 0xc2, 0x7e, 0x97, 0xac, 0x10, 0x18, 0xc2, 0x20, 0xa5, 0x23,
+	0x7b, 0x6c, 0x4f, 0x82, 0x64, 0x90, 0x52, 0xf2, 0x06, 0xdc, 0x15, 0xa7, 0xec, 0xbc, 0x8f, 0x08,
+	0xee, 0x96, 0xd2, 0x7c, 0x34, 0x18, 0xdb, 0x13, 0x3f, 0xa9, 0xd7, 0xe4, 0x25, 0xc0, 0x92, 0x09,
+	0x3d, 0x69, 0x08, 0xce, 0x2f, 0x56, 0xd5, 0x11, 0x3f, 0x91, 0x4b, 0x12, 0x00, 0xc4, 0xa5, 0xd6,
+	0x65, 0xb5, 0x60, 0x99, 0xae, 0xc6, 0xe0, 0x25, 0xac, 0x28, 0x33, 0x81, 0x0f, 0xe0, 0xe5, 0xf5,
+	0xaa, 0x89, 0x36, 0x15, 0xf1, 0xc0, 0xdd, 0xf0, 0x94, 0x92, 0x1b, 0xb8, 0x8e, 0xd3, 0xc3, 0x4f,
+	0x1d, 0xbc, 0x06, 0x5f, 0x95, 0xc7, 0xac, 0x22, 0x77, 0x70, 0x2b, 0x4f, 0x25, 0x77, 0xac, 0xf5,
+	0x5b, 0xb8, 0xe9, 0x5a, 0xd2, 0x83, 0x30, 0x94, 0x8d, 0xcd, 0x36, 0x2b, 0x5b, 0xd3, 0x10, 0x42,
+	0xa3, 0x27, 0x5d, 0x21, 0x04, 0x6b, 0xc1, 0x73, 0x66, 0xec, 0xb6, 0xa9, 0x8f, 0x59, 0x35, 0xfb,
+	0x6b, 0xc3, 0xd5, 0xa7, 0x3d, 0xcf, 0x29, 0x7e, 0x50, 0xe3, 0x5b, 0x8e, 0xf8, 0x42, 0x81, 0x2e,
+	0xa6, 0x7d, 0x78, 0xa3, 0x40, 0xab, 0x72, 0x3f, 0xc4, 0xc2, 0x09, 0x78, 0x2b, 0x2e, 0xd2, 0x1f,
+	0x15, 0x9e, 0x28, 0x51, 0xa8, 0x2b, 0x05, 0x85, 0x58, 0xf8, 0x56, 0x1d, 0x2d, 0xce, 0x19, 0x65,
+	0xcd, 0x5f, 0xb5, 0x11, 0xc9, 0xe5, 0x62, 0xf4, 0x2b, 0x70, 0x25, 0x98, 0xb3, 0xc1, 0x27, 0x19,
+	0x62, 0xcd, 0xfe, 0xd9, 0xe0, 0x7c, 0xdd, 0x52, 0x7c, 0xd7, 0xb8, 0x9f, 0x6a, 0xdd, 0x60, 0x1c,
+	0xdd, 0x9d, 0x36, 0x25, 0x1f, 0x0b, 0xdf, 0xc3, 0x13, 0x0d, 0x16, 0x9f, 0x9b, 0x87, 0x36, 0xe8,
+	0x47, 0xcf, 0x2e, 0x05, 0x95, 0xfe, 0x08, 0x7e, 0x4b, 0x1c, 0x47, 0xa6, 0xcb, 0xbc, 0x98, 0xe8,
+	0xa1, 0x47, 0x51, 0x03, 0xe6, 0x70, 0x55, 0x5f, 0x08, 0xde, 0x6b, 0x8b, 0x79, 0x5f, 0x11, 0x9e,
+	0x75, 0xeb, 0xd0, 0xec, 0x8f, 0x0d, 0xce, 0xe2, 0xcb, 0x37, 0x7c, 0x04, 0x67, 0xc9, 0x04, 0xb6,
+	0xa6, 0xee, 0xd9, 0xf6, 0x90, 0x7f, 0x04, 0x27, 0x2e, 0x0d, 0x73, 0xf7, 0x86, 0xfb, 0xcd, 0x0b,
+	0x96, 0x75, 0xe6, 0xee, 0x89, 0x5f, 0x9a, 0xbf, 0xab, 0x8f, 0x71, 0xfe, 0x3f, 0x00, 0x00, 0xff,
+	0xff, 0x07, 0x1a, 0x87, 0x0a, 0xa0, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -641,8 +593,9 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ChordClient interface {
 	FindSuccessor(ctx context.Context, in *FindSuccessorRequest, opts ...grpc.CallOption) (*Node, error)
-	Notify(ctx context.Context, in *NotifyRequest, opts ...grpc.CallOption) (*Result, error)
+	Notify(ctx context.Context, in *Node, opts ...grpc.CallOption) (*Result, error)
 	FindPredecessor(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Node, error)
+	Ping(ctx context.Context, in *Node, opts ...grpc.CallOption) (*Void, error)
 }
 
 type chordClient struct {
@@ -662,7 +615,7 @@ func (c *chordClient) FindSuccessor(ctx context.Context, in *FindSuccessorReques
 	return out, nil
 }
 
-func (c *chordClient) Notify(ctx context.Context, in *NotifyRequest, opts ...grpc.CallOption) (*Result, error) {
+func (c *chordClient) Notify(ctx context.Context, in *Node, opts ...grpc.CallOption) (*Result, error) {
 	out := new(Result)
 	err := c.cc.Invoke(ctx, "/protos.Chord/Notify", in, out, opts...)
 	if err != nil {
@@ -680,11 +633,21 @@ func (c *chordClient) FindPredecessor(ctx context.Context, in *Void, opts ...grp
 	return out, nil
 }
 
+func (c *chordClient) Ping(ctx context.Context, in *Node, opts ...grpc.CallOption) (*Void, error) {
+	out := new(Void)
+	err := c.cc.Invoke(ctx, "/protos.Chord/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChordServer is the server API for Chord service.
 type ChordServer interface {
 	FindSuccessor(context.Context, *FindSuccessorRequest) (*Node, error)
-	Notify(context.Context, *NotifyRequest) (*Result, error)
+	Notify(context.Context, *Node) (*Result, error)
 	FindPredecessor(context.Context, *Void) (*Node, error)
+	Ping(context.Context, *Node) (*Void, error)
 }
 
 // UnimplementedChordServer can be embedded to have forward compatible implementations.
@@ -694,11 +657,14 @@ type UnimplementedChordServer struct {
 func (*UnimplementedChordServer) FindSuccessor(ctx context.Context, req *FindSuccessorRequest) (*Node, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindSuccessor not implemented")
 }
-func (*UnimplementedChordServer) Notify(ctx context.Context, req *NotifyRequest) (*Result, error) {
+func (*UnimplementedChordServer) Notify(ctx context.Context, req *Node) (*Result, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Notify not implemented")
 }
 func (*UnimplementedChordServer) FindPredecessor(ctx context.Context, req *Void) (*Node, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindPredecessor not implemented")
+}
+func (*UnimplementedChordServer) Ping(ctx context.Context, req *Node) (*Void, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 
 func RegisterChordServer(s *grpc.Server, srv ChordServer) {
@@ -724,7 +690,7 @@ func _Chord_FindSuccessor_Handler(srv interface{}, ctx context.Context, dec func
 }
 
 func _Chord_Notify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NotifyRequest)
+	in := new(Node)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -736,7 +702,7 @@ func _Chord_Notify_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/protos.Chord/Notify",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChordServer).Notify(ctx, req.(*NotifyRequest))
+		return srv.(ChordServer).Notify(ctx, req.(*Node))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -759,6 +725,24 @@ func _Chord_FindPredecessor_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Chord_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Node)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChordServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.Chord/Ping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChordServer).Ping(ctx, req.(*Node))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Chord_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "protos.Chord",
 	HandlerType: (*ChordServer)(nil),
@@ -774,6 +758,10 @@ var _Chord_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindPredecessor",
 			Handler:    _Chord_FindPredecessor_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Chord_Ping_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

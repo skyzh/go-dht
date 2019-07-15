@@ -21,9 +21,9 @@ func TestChordNode(t *testing.T) {
 	g.Describe("bootstrap", func() {
 		server := NewChordServer("127.0.0.1:23333")
 		g.It("should initialize node", func() {
-			g.Assert(len(server.self.id)).Eql(160 / 8)
+			g.Assert(len(server.self.id)).Eql(M_bytes)
 			g.Assert(server.predecessor == nil).Eql(true)
-			g.Assert(server.successor).Eql(server.self)
+			g.Assert(server.successor()).Eql(server.self)
 		})
 	})
 }
@@ -107,8 +107,8 @@ func TestChordSystem(t *testing.T) {
 			}
 			time.Sleep(time.Second)
 			for i := range chord_servers {
-				g.Assert(chord_servers[i].successor == nil).IsFalse()
-				id1 := chord_servers[i].successor.id
+				g.Assert(chord_servers[i].successor() == nil).IsFalse()
+				id1 := chord_servers[i].successor().id
 				id2 := chord_servers[i].self.id
 				if i != 0 {
 					g.Assert(bytes.Equal(id1, id2)).IsFalse()
