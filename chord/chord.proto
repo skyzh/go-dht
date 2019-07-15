@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package chord;
+
+service Chord {
+    rpc FindSuccessor (SuccessorRequest) returns (SuccessorReply) {}
+}
+
+message SuccessorRequest {
+    string k = 1;
+}
+
+message SuccessorReply {
+    string id = 1;
+}
