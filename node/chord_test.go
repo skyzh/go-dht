@@ -11,6 +11,7 @@ import (
 	"net"
 	"sort"
 	"testing"
+	"time"
 )
 
 var test_addr = "abcdeabcdeabcdeabcde"
@@ -86,6 +87,57 @@ func TeardownChordCluster(grpc_servers []*grpc.Server, chord_servers []*ChordSer
 	}
 }
 
+func chord_system_test_join(g *G, n int) {
+	grpc_servers, chord_servers := MakeChordCluster(n)
+	ctx, cancel := context.WithCancel(context.Background())
+	for i := range chord_servers {
+		if i != 0 {
+			err := chord_servers[i].Join(ctx, chord_servers[0].self)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
+		}
+	}
+	for i := range chord_servers {
+		g.Assert(chord_servers[i].successor() == nil).IsFalse()
+		id1 := chord_servers[i].successor().id
+		id2 := chord_servers[i].self.id
+		if i != 0 {
+			g.Assert(bytes.Equal(id1, id2)).IsFalse()
+		}
+	}
+	cancel()
+	TeardownChordCluster(grpc_servers, chord_servers)
+}
+
+func chord_system_test_stabilization(g *G, n int) {
+	grpc_servers, chord_servers := MakeChordCluster(n)
+	ctx, cancel := context.WithCancel(context.Background())
+	for i := range chord_servers {
+		if i != 0 {
+			err := chord_servers[i].Join(ctx, chord_servers[0].self)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
+		}
+	}
+	for k := 0; k < n * 3; k++ {
+		for i := range chord_servers {
+			err := chord_servers[i].Stabilize(ctx)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
+		}
+	}
+	for i := range chord_servers {
+		next_i := (i + 1) % len(chord_servers)
+		g.Assert(bytes.Equal(chord_servers[next_i].predecessor.id, chord_servers[i].self.id)).IsTrue()
+		g.Assert(bytes.Equal(chord_servers[i].successor().id, chord_servers[next_i].self.id)).IsTrue()
+	}
+	cancel()
+	TeardownChordCluster(grpc_servers, chord_servers)
+}
+
 func TestChordSystem(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping system testing in short mode")
@@ -93,58 +145,24 @@ func TestChordSystem(t *testing.T) {
 
 	g := Goblin(t)
 
+
 	g.Describe("node join", func() {
 		g.It("should join a 10-node network", func() {
-			grpc_servers, chord_servers := MakeChordCluster(10)
-			ctx, cancel := context.WithCancel(context.Background())
-			for i := range chord_servers {
-				if i != 0 {
-					err := chord_servers[i].Join(ctx, chord_servers[0].self)
-					if err != nil {
-						log.Fatalf("error: %v", err)
-					}
-				}
-			}
-			for i := range chord_servers {
-				g.Assert(chord_servers[i].successor() == nil).IsFalse()
-				id1 := chord_servers[i].successor().id
-				id2 := chord_servers[i].self.id
-				if i != 0 {
-					g.Assert(bytes.Equal(id1, id2)).IsFalse()
-				}
-			}
-			cancel()
-			TeardownChordCluster(grpc_servers, chord_servers)
+			chord_system_test_join(g, 10)
+		})
+		g.It("should join a 50-node network", func() {
+			g.Timeout(time.Second * 60)
+			chord_system_test_join(g, 50)
 		})
 	})
 
 	g.Describe("node stabilization", func() {
 		g.It("should stabilize a 10-node network", func() {
-			grpc_servers, chord_servers := MakeChordCluster(10)
-			ctx, cancel := context.WithCancel(context.Background())
-			for i := range chord_servers {
-				if i != 0 {
-					err := chord_servers[i].Join(ctx, chord_servers[0].self)
-					if err != nil {
-						log.Fatalf("error: %v", err)
-					}
-				}
-			}
-			for k := 0; k < 30; k++ {
-				for i := range chord_servers {
-					err := chord_servers[i].Stabilize(ctx)
-					if err != nil {
-						log.Fatalf("error: %v", err)
-					}
-				}
-			}
-			for i := range chord_servers {
-				next_i := (i + 1) % len(chord_servers)
-				g.Assert(bytes.Equal(chord_servers[next_i].predecessor.id, chord_servers[i].self.id)).IsTrue()
-				g.Assert(bytes.Equal(chord_servers[i].successor().id, chord_servers[next_i].self.id)).IsTrue()
-			}
-			cancel()
-			TeardownChordCluster(grpc_servers, chord_servers)
+			chord_system_test_stabilization(g, 10)
+		})
+		g.It("should stabilize a 50-node network", func() {
+			g.Timeout(time.Second * 60)
+			chord_system_test_stabilization(g, 50)
 		})
 	})
 }

@@ -1,1 +1,1 @@
-protos/*.pb.go linguist-vendored
+protos/dht.pb.go linguist-vendored
