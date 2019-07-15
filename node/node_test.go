@@ -3,7 +3,7 @@ package node
 import (
 	"context"
 	. "github.com/franela/goblin"
-	pb "github.com/skyzh/go-dht/chord"
+	pb "github.com/skyzh/go-dht/protos"
 	"testing"
 )
 

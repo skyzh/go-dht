@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package protos;
+
+message SuccessorRequest {
+    string k = 1;
+}
+
+message SuccessorReply {
+    string id = 1;
+}
+
+message QueryRequest {
+    string key = 1;
+}
+
+message QueryReply {
+    string value = 1;
+}
+
+message PingRequest {
+}
+
+message PingReply {
+}
+
+message FindNodeRequest {
+}
+
+message FindNodeReply {
+}
+
+message FindValueRequest {
+}
+
+message FindValueReply {
+}
+
+message StoreRequest {
+}
+
+message StoreReply {
+}
+
+service Chord {
+    rpc FindSuccessor (SuccessorRequest) returns (SuccessorReply) {
+    }
+}
+
+service Kad {
+    rpc Ping (PingRequest) returns (PingReply) {
+    }
+
+    rpc FindNode (FindNodeRequest) returns (FindNodeReply) {
+    }
+
+    rpc FindValue (FindValueRequest) returns (FindValueReply) {
+    }
+    
+    rpc Store (StoreRequest) returns (StoreReply) {
+    }
+}
+
+service DHT {
+    rpc Query (QueryRequest) returns (QueryReply) {
+    }
+}
+

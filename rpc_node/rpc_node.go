@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/skyzh/go-dht/chord"
+	pb "github.com/skyzh/go-dht/protos"
 	"github.com/skyzh/go-dht/node"
 	"google.golang.org/grpc"
 	"log"

@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	pb "github.com/skyzh/go-dht/chord"
+	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
 	"log"
 	"time"
