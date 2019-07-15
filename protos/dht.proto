@@ -65,7 +65,7 @@ service Chord {
     rpc Notify (Node) returns (Result) {
     }
 
-    rpc FindPredecessor (Void) returns (Node) {
+    rpc FindPredecessor (Node) returns (Node) {
     }
 
     rpc Ping(Node) returns (Void) {

@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"sort"
 	"testing"
-	"time"
 )
 
 var test_addr = "abcdeabcdeabcdeabcde"
@@ -37,14 +37,8 @@ func TestChordRPC(t *testing.T) {
 			g.Assert(err == nil).IsTrue()
 			g.Assert(node.Id).Equal(server.self.id)
 		})
-		g.It("should return no predecessor when bootstrap", func() {
-			node, err := server.FindPredecessor(context.Background(), &pb.Void{})
-			g.Assert(err == nil).IsFalse()
-			g.Assert(node == nil).IsTrue()
-		})
-		g.It("should return predecessor", func() {
-			server.predecessor = &ChordNode{id: test_id, address: test_addr}
-			node, err := server.FindPredecessor(context.Background(), &pb.Void{})
+		g.It("should return given predecessor when start up", func() {
+			node, err := server.FindPredecessor(context.Background(), &pb.Node{Id: test_id, Addr: test_addr})
 			g.Assert(err == nil).IsTrue()
 			g.Assert(node.Addr).Equal(test_addr)
 		})
@@ -68,9 +62,15 @@ func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
 	done := make(chan bool)
 	var chord_servers []*ChordServer
 	var grpc_servers [] *grpc.Server
+	var addr []string
 	for i := 0; i < n; i++ {
-		addr := fmt.Sprintf("127.0.0.1:%v", i+40000)
-		chord_servers = append(chord_servers, NewChordServer(addr))
+		addr = append(addr, fmt.Sprintf("127.0.0.1:%v", i+40000))
+	}
+	sort.SliceStable(addr, func(i, j int) bool {
+		return bytes.Compare(generate_sha1(addr[i]), generate_sha1(addr[j])) < 0
+	})
+	for i := 0; i < n; i++ {
+		chord_servers = append(chord_servers, NewChordServer(addr[i]))
 		grpc_servers = append(grpc_servers, grpc.NewServer())
 		go run_server(grpc_servers[i], chord_servers[i], done)
 	}
@@ -105,7 +105,6 @@ func TestChordSystem(t *testing.T) {
 					}
 				}
 			}
-			time.Sleep(time.Second)
 			for i := range chord_servers {
 				g.Assert(chord_servers[i].successor() == nil).IsFalse()
 				id1 := chord_servers[i].successor().id
@@ -113,6 +112,36 @@ func TestChordSystem(t *testing.T) {
 				if i != 0 {
 					g.Assert(bytes.Equal(id1, id2)).IsFalse()
 				}
+			}
+			cancel()
+			TeardownChordCluster(grpc_servers, chord_servers)
+		})
+	})
+
+	g.Describe("node stabilization", func() {
+		g.It("should stabilize a 10-node network", func() {
+			grpc_servers, chord_servers := MakeChordCluster(10)
+			ctx, cancel := context.WithCancel(context.Background())
+			for i := range chord_servers {
+				if i != 0 {
+					err := chord_servers[i].Join(ctx, chord_servers[0].self)
+					if err != nil {
+						log.Fatalf("error: %v", err)
+					}
+				}
+			}
+			for k := 0; k < 30; k++ {
+				for i := range chord_servers {
+					err := chord_servers[i].Stabilize(ctx)
+					if err != nil {
+						log.Fatalf("error: %v", err)
+					}
+				}
+			}
+			for i := range chord_servers {
+				next_i := (i + 1) % len(chord_servers)
+				g.Assert(bytes.Equal(chord_servers[next_i].predecessor.id, chord_servers[i].self.id)).IsTrue()
+				g.Assert(bytes.Equal(chord_servers[i].successor().id, chord_servers[next_i].self.id)).IsTrue()
 			}
 			cancel()
 			TeardownChordCluster(grpc_servers, chord_servers)

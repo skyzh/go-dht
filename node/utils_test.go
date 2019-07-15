@@ -39,6 +39,8 @@ func TestUtils(t *testing.T) {
 			a := []byte("11111111111111111111")
 			c := []byte("11111111111111111111")
 			g.Assert(in_range(c, a, b)).IsTrue()
+			d := []byte("11111111211111111111")
+			g.Assert(in_range(d, a, b)).IsTrue()
 		})
 	})
 	g.Describe("in_range_exclude", func() {
@@ -59,6 +61,12 @@ func TestUtils(t *testing.T) {
 			a := []byte("22222222222222222222")
 			c := []byte("33333333333333333333")
 			g.Assert(in_range_exclude(c, a, b)).IsTrue()
+		})
+		g.It("should include anything in cycle", func() {
+			b := []byte("11111111111111111111")
+			a := []byte("11111111111111111111")
+			d := []byte("11111111211111111111")
+			g.Assert(in_range(d, a, b)).IsTrue()
 		})
 	})
 	g.Describe("byte_add_power_2", func() {

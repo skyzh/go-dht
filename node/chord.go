@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	M = 160
+	M       = 160
 	M_bytes = M / 8
 )
 
@@ -84,14 +84,14 @@ func (s *ChordServer) Join(ctx context.Context, node *ChordNode) error {
 }
 
 func (s *ChordServer) Stabilize(ctx context.Context) error {
-	x, err := s.successor().FindPredecessor(ctx)
+	x, err := s.successor().FindPredecessor(ctx, s.self)
 	if err != nil {
 		return err
 	}
 	if in_range_exclude(x.id, s.self.id, s.successor().id) {
 		s.finger[0] = x
 	}
-	err = s.successor().Notify(ctx, s.self.id, s.self.address)
+	err = s.successor().Notify(ctx, s.self)
 	if err != nil {
 		return err
 	}
@@ -108,7 +108,11 @@ func (s *ChordServer) Notify(ctx context.Context, in *pb.Node) (*pb.Result, erro
 	return &pb.Result{Result: "success"}, nil
 }
 
-func (s *ChordServer) FindPredecessor(ctx context.Context, in *pb.Void) (*pb.Node, error) {
+func (s *ChordServer) FindPredecessor(ctx context.Context, in *pb.Node) (*pb.Node, error) {
+	_, err := s.Notify(ctx, in)
+	if err != nil {
+		return nil, err
+	}
 	s.mux.Lock()
 	defer s.mux.Unlock()
 	if s.predecessor == nil {
@@ -143,6 +147,11 @@ func (s *ChordServer) CheckPredecessor(ctx context.Context) error {
 }
 
 func (s *ChordServer) ClosestPrecedingNode(ctx context.Context, id []byte) (*ChordNode, error) {
+	for i := M - 1; i >= 0; i-- {
+		if in_range_exclude(s.finger[i].id, s.self.id, id) {
+			return s.finger[i], nil
+		}
+	}
 	return nil, nil
 }
 
@@ -160,28 +169,28 @@ func (n *ChordNode) FindSuccessor(ctx context.Context, id []byte) (*ChordNode, e
 	return &ChordNode{r.Id, r.Addr}, nil
 }
 
-func (n *ChordNode) FindPredecessor(ctx context.Context) (*ChordNode, error) {
+func (n *ChordNode) FindPredecessor(ctx context.Context, self *ChordNode) (*ChordNode, error) {
 	conn, err := grpc.Dial(n.address, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
 	defer conn.Close()
 	c := pb.NewChordClient(conn)
-	r, err := c.FindPredecessor(ctx, &pb.Void{})
+	r, err := c.FindPredecessor(ctx, &pb.Node{Id: self.id, Addr: self.address})
 	if err != nil {
 		return nil, err
 	}
 	return &ChordNode{r.Id, r.Addr}, nil
 }
 
-func (n *ChordNode) Notify(ctx context.Context, id []byte, addr string) error {
+func (n *ChordNode) Notify(ctx context.Context, self *ChordNode) error {
 	conn, err := grpc.Dial(n.address, grpc.WithInsecure())
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
 	c := pb.NewChordClient(conn)
-	_, err = c.Notify(ctx, &pb.Node{Id: id, Addr: addr})
+	_, err = c.Notify(ctx, &pb.Node{Id: self.id, Addr: self.address})
 	if err != nil {
 		return err
 	}
