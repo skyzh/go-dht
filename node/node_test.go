@@ -1,26 +1,21 @@
 package node
 
 import (
+	"context"
 	. "github.com/franela/goblin"
+	pb "github.com/skyzh/go-dht/chord"
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestNode(t *testing.T) {
 	g := Goblin(t)
-	g.Describe("Numbers", func() {
-		// Passing Test
-		g.It("Should add two numbers ", func() {
-			g.Assert(1+1).Equal(2)
-		})
-		// Failing Test
-		g.It("Should match equal numbers", func() {
-			g.Assert(2).Equal(4)
-		})
-		// Pending Test
-		g.It("Should substract two numbers")
-		// Excluded Test
-		g.Xit("Should add two numbers ", func() {
-			g.Assert(3+1).Equal(4)
+	g.Describe("Chord RPCs", func() {
+		server := &DHTServer{}
+		g.It("should return successor ", func() {
+			request := &pb.SuccessorRequest{}
+			reply, err := server.FindSuccessor(context.Background(), request)
+			g.Assert(reply.Id).Equal("23333")
+			g.Assert(err).Equal(nil)
 		})
 	})
 }
