@@ -2,21 +2,39 @@ syntax = "proto3";
 
 package protos;
 
-message SuccessorRequest {
-    string k = 1;
+// Chord RPCs
+
+message FindSuccessorRequest {
+    bytes id = 1;
 }
 
-message SuccessorReply {
-    string id = 1;
+message FindSuccessorReply {
+    bytes id = 1;
+    string addr = 2;
 }
 
-message QueryRequest {
+message NotifyRequest {
+    bytes id = 1;
+    string addr = 2;
+}
+
+// DHT Common RPCs
+
+message GetRequest {
     string key = 1;
 }
 
-message QueryReply {
-    string value = 1;
+message PutRequest {
 }
+
+message DelRequest {
+}
+
+message Result {
+    string result = 1;
+}
+
+// Kad RPCs
 
 message PingRequest {
 }
@@ -43,7 +61,10 @@ message StoreReply {
 }
 
 service Chord {
-    rpc FindSuccessor (SuccessorRequest) returns (SuccessorReply) {
+    rpc FindSuccessor (FindSuccessorRequest) returns (FindSuccessorReply) {
+    }
+
+    rpc Notify (NotifyRequest) returns (Result) {
     }
 }
 
@@ -56,13 +77,16 @@ service Kad {
 
     rpc FindValue (FindValueRequest) returns (FindValueReply) {
     }
-    
+
     rpc Store (StoreRequest) returns (StoreReply) {
     }
 }
 
 service DHT {
-    rpc Query (QueryRequest) returns (QueryReply) {
+    rpc Get (GetRequest) returns (Result) {
+    }
+    rpc Put (PutRequest) returns (Result) {
+    }
+    rpc Del (DelRequest) returns (Result) {
     }
 }
-

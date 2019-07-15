@@ -24,6 +24,14 @@
   version = "v1.3.2"
 
 [[projects]]
+  digest = "1:a56d34763927b7d10f2fea22f49ab80232cc4c4c1fe5f40399c3665f5cbfc7e5"
+  name = "github.com/processout/grpc-go-pool"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "dd880f820cb22b1abcb14d6f98c3812ac05b3758"
+  version = "v1.2.1"
+
+[[projects]]
   branch = "master"
   digest = "1:d31a812696686f0059241fa6c3b56d89ada56dddde4db1d5036de5c1084000c5"
   name = "golang.org/x/net"
@@ -127,6 +135,7 @@
   input-imports = [
     "github.com/franela/goblin",
     "github.com/golang/protobuf/proto",
+    "github.com/processout/grpc-go-pool",
     "google.golang.org/grpc",
     "google.golang.org/grpc/codes",
     "google.golang.org/grpc/status",

@@ -24,158 +24,275 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type SuccessorRequest struct {
-	K                    string   `protobuf:"bytes,1,opt,name=k,proto3" json:"k,omitempty"`
+type FindSuccessorRequest struct {
+	Id                   []byte   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *SuccessorRequest) Reset()         { *m = SuccessorRequest{} }
-func (m *SuccessorRequest) String() string { return proto.CompactTextString(m) }
-func (*SuccessorRequest) ProtoMessage()    {}
-func (*SuccessorRequest) Descriptor() ([]byte, []int) {
+func (m *FindSuccessorRequest) Reset()         { *m = FindSuccessorRequest{} }
+func (m *FindSuccessorRequest) String() string { return proto.CompactTextString(m) }
+func (*FindSuccessorRequest) ProtoMessage()    {}
+func (*FindSuccessorRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_616a434b24c97ff4, []int{0}
 }
 
-func (m *SuccessorRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SuccessorRequest.Unmarshal(m, b)
+func (m *FindSuccessorRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FindSuccessorRequest.Unmarshal(m, b)
 }
-func (m *SuccessorRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SuccessorRequest.Marshal(b, m, deterministic)
+func (m *FindSuccessorRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FindSuccessorRequest.Marshal(b, m, deterministic)
 }
-func (m *SuccessorRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SuccessorRequest.Merge(m, src)
+func (m *FindSuccessorRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FindSuccessorRequest.Merge(m, src)
 }
-func (m *SuccessorRequest) XXX_Size() int {
-	return xxx_messageInfo_SuccessorRequest.Size(m)
+func (m *FindSuccessorRequest) XXX_Size() int {
+	return xxx_messageInfo_FindSuccessorRequest.Size(m)
 }
-func (m *SuccessorRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_SuccessorRequest.DiscardUnknown(m)
+func (m *FindSuccessorRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_FindSuccessorRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SuccessorRequest proto.InternalMessageInfo
+var xxx_messageInfo_FindSuccessorRequest proto.InternalMessageInfo
 
-func (m *SuccessorRequest) GetK() string {
+func (m *FindSuccessorRequest) GetId() []byte {
 	if m != nil {
-		return m.K
+		return m.Id
 	}
-	return ""
+	return nil
 }
 
-type SuccessorReply struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+type FindSuccessorReply struct {
+	Id                   []byte   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Addr                 string   `protobuf:"bytes,2,opt,name=addr,proto3" json:"addr,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *SuccessorReply) Reset()         { *m = SuccessorReply{} }
-func (m *SuccessorReply) String() string { return proto.CompactTextString(m) }
-func (*SuccessorReply) ProtoMessage()    {}
-func (*SuccessorReply) Descriptor() ([]byte, []int) {
+func (m *FindSuccessorReply) Reset()         { *m = FindSuccessorReply{} }
+func (m *FindSuccessorReply) String() string { return proto.CompactTextString(m) }
+func (*FindSuccessorReply) ProtoMessage()    {}
+func (*FindSuccessorReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_616a434b24c97ff4, []int{1}
 }
 
-func (m *SuccessorReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SuccessorReply.Unmarshal(m, b)
+func (m *FindSuccessorReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FindSuccessorReply.Unmarshal(m, b)
 }
-func (m *SuccessorReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SuccessorReply.Marshal(b, m, deterministic)
+func (m *FindSuccessorReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FindSuccessorReply.Marshal(b, m, deterministic)
 }
-func (m *SuccessorReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SuccessorReply.Merge(m, src)
+func (m *FindSuccessorReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FindSuccessorReply.Merge(m, src)
 }
-func (m *SuccessorReply) XXX_Size() int {
-	return xxx_messageInfo_SuccessorReply.Size(m)
+func (m *FindSuccessorReply) XXX_Size() int {
+	return xxx_messageInfo_FindSuccessorReply.Size(m)
 }
-func (m *SuccessorReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_SuccessorReply.DiscardUnknown(m)
+func (m *FindSuccessorReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_FindSuccessorReply.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SuccessorReply proto.InternalMessageInfo
+var xxx_messageInfo_FindSuccessorReply proto.InternalMessageInfo
 
-func (m *SuccessorReply) GetId() string {
+func (m *FindSuccessorReply) GetId() []byte {
 	if m != nil {
 		return m.Id
+	}
+	return nil
+}
+
+func (m *FindSuccessorReply) GetAddr() string {
+	if m != nil {
+		return m.Addr
 	}
 	return ""
 }
 
-type QueryRequest struct {
+type NotifyRequest struct {
+	Id                   []byte   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Addr                 string   `protobuf:"bytes,2,opt,name=addr,proto3" json:"addr,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NotifyRequest) Reset()         { *m = NotifyRequest{} }
+func (m *NotifyRequest) String() string { return proto.CompactTextString(m) }
+func (*NotifyRequest) ProtoMessage()    {}
+func (*NotifyRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_616a434b24c97ff4, []int{2}
+}
+
+func (m *NotifyRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NotifyRequest.Unmarshal(m, b)
+}
+func (m *NotifyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NotifyRequest.Marshal(b, m, deterministic)
+}
+func (m *NotifyRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NotifyRequest.Merge(m, src)
+}
+func (m *NotifyRequest) XXX_Size() int {
+	return xxx_messageInfo_NotifyRequest.Size(m)
+}
+func (m *NotifyRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_NotifyRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NotifyRequest proto.InternalMessageInfo
+
+func (m *NotifyRequest) GetId() []byte {
+	if m != nil {
+		return m.Id
+	}
+	return nil
+}
+
+func (m *NotifyRequest) GetAddr() string {
+	if m != nil {
+		return m.Addr
+	}
+	return ""
+}
+
+type GetRequest struct {
 	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *QueryRequest) Reset()         { *m = QueryRequest{} }
-func (m *QueryRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryRequest) ProtoMessage()    {}
-func (*QueryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{2}
+func (m *GetRequest) Reset()         { *m = GetRequest{} }
+func (m *GetRequest) String() string { return proto.CompactTextString(m) }
+func (*GetRequest) ProtoMessage()    {}
+func (*GetRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_616a434b24c97ff4, []int{3}
 }
 
-func (m *QueryRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_QueryRequest.Unmarshal(m, b)
+func (m *GetRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetRequest.Unmarshal(m, b)
 }
-func (m *QueryRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_QueryRequest.Marshal(b, m, deterministic)
+func (m *GetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetRequest.Marshal(b, m, deterministic)
 }
-func (m *QueryRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRequest.Merge(m, src)
+func (m *GetRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetRequest.Merge(m, src)
 }
-func (m *QueryRequest) XXX_Size() int {
-	return xxx_messageInfo_QueryRequest.Size(m)
+func (m *GetRequest) XXX_Size() int {
+	return xxx_messageInfo_GetRequest.Size(m)
 }
-func (m *QueryRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRequest.DiscardUnknown(m)
+func (m *GetRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRequest proto.InternalMessageInfo
+var xxx_messageInfo_GetRequest proto.InternalMessageInfo
 
-func (m *QueryRequest) GetKey() string {
+func (m *GetRequest) GetKey() string {
 	if m != nil {
 		return m.Key
 	}
 	return ""
 }
 
-type QueryReply struct {
-	Value                string   `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+type PutRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *QueryReply) Reset()         { *m = QueryReply{} }
-func (m *QueryReply) String() string { return proto.CompactTextString(m) }
-func (*QueryReply) ProtoMessage()    {}
-func (*QueryReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{3}
+func (m *PutRequest) Reset()         { *m = PutRequest{} }
+func (m *PutRequest) String() string { return proto.CompactTextString(m) }
+func (*PutRequest) ProtoMessage()    {}
+func (*PutRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_616a434b24c97ff4, []int{4}
 }
 
-func (m *QueryReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_QueryReply.Unmarshal(m, b)
+func (m *PutRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PutRequest.Unmarshal(m, b)
 }
-func (m *QueryReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_QueryReply.Marshal(b, m, deterministic)
+func (m *PutRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PutRequest.Marshal(b, m, deterministic)
 }
-func (m *QueryReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryReply.Merge(m, src)
+func (m *PutRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PutRequest.Merge(m, src)
 }
-func (m *QueryReply) XXX_Size() int {
-	return xxx_messageInfo_QueryReply.Size(m)
+func (m *PutRequest) XXX_Size() int {
+	return xxx_messageInfo_PutRequest.Size(m)
 }
-func (m *QueryReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryReply.DiscardUnknown(m)
+func (m *PutRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PutRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryReply proto.InternalMessageInfo
+var xxx_messageInfo_PutRequest proto.InternalMessageInfo
 
-func (m *QueryReply) GetValue() string {
+type DelRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DelRequest) Reset()         { *m = DelRequest{} }
+func (m *DelRequest) String() string { return proto.CompactTextString(m) }
+func (*DelRequest) ProtoMessage()    {}
+func (*DelRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_616a434b24c97ff4, []int{5}
+}
+
+func (m *DelRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DelRequest.Unmarshal(m, b)
+}
+func (m *DelRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DelRequest.Marshal(b, m, deterministic)
+}
+func (m *DelRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DelRequest.Merge(m, src)
+}
+func (m *DelRequest) XXX_Size() int {
+	return xxx_messageInfo_DelRequest.Size(m)
+}
+func (m *DelRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DelRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DelRequest proto.InternalMessageInfo
+
+type Result struct {
+	Result               string   `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Result) Reset()         { *m = Result{} }
+func (m *Result) String() string { return proto.CompactTextString(m) }
+func (*Result) ProtoMessage()    {}
+func (*Result) Descriptor() ([]byte, []int) {
+	return fileDescriptor_616a434b24c97ff4, []int{6}
+}
+
+func (m *Result) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Result.Unmarshal(m, b)
+}
+func (m *Result) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Result.Marshal(b, m, deterministic)
+}
+func (m *Result) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Result.Merge(m, src)
+}
+func (m *Result) XXX_Size() int {
+	return xxx_messageInfo_Result.Size(m)
+}
+func (m *Result) XXX_DiscardUnknown() {
+	xxx_messageInfo_Result.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Result proto.InternalMessageInfo
+
+func (m *Result) GetResult() string {
 	if m != nil {
-		return m.Value
+		return m.Result
 	}
 	return ""
 }
@@ -190,7 +307,7 @@ func (m *PingRequest) Reset()         { *m = PingRequest{} }
 func (m *PingRequest) String() string { return proto.CompactTextString(m) }
 func (*PingRequest) ProtoMessage()    {}
 func (*PingRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{4}
+	return fileDescriptor_616a434b24c97ff4, []int{7}
 }
 
 func (m *PingRequest) XXX_Unmarshal(b []byte) error {
@@ -221,7 +338,7 @@ func (m *PingReply) Reset()         { *m = PingReply{} }
 func (m *PingReply) String() string { return proto.CompactTextString(m) }
 func (*PingReply) ProtoMessage()    {}
 func (*PingReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{5}
+	return fileDescriptor_616a434b24c97ff4, []int{8}
 }
 
 func (m *PingReply) XXX_Unmarshal(b []byte) error {
@@ -252,7 +369,7 @@ func (m *FindNodeRequest) Reset()         { *m = FindNodeRequest{} }
 func (m *FindNodeRequest) String() string { return proto.CompactTextString(m) }
 func (*FindNodeRequest) ProtoMessage()    {}
 func (*FindNodeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{6}
+	return fileDescriptor_616a434b24c97ff4, []int{9}
 }
 
 func (m *FindNodeRequest) XXX_Unmarshal(b []byte) error {
@@ -283,7 +400,7 @@ func (m *FindNodeReply) Reset()         { *m = FindNodeReply{} }
 func (m *FindNodeReply) String() string { return proto.CompactTextString(m) }
 func (*FindNodeReply) ProtoMessage()    {}
 func (*FindNodeReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{7}
+	return fileDescriptor_616a434b24c97ff4, []int{10}
 }
 
 func (m *FindNodeReply) XXX_Unmarshal(b []byte) error {
@@ -314,7 +431,7 @@ func (m *FindValueRequest) Reset()         { *m = FindValueRequest{} }
 func (m *FindValueRequest) String() string { return proto.CompactTextString(m) }
 func (*FindValueRequest) ProtoMessage()    {}
 func (*FindValueRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{8}
+	return fileDescriptor_616a434b24c97ff4, []int{11}
 }
 
 func (m *FindValueRequest) XXX_Unmarshal(b []byte) error {
@@ -345,7 +462,7 @@ func (m *FindValueReply) Reset()         { *m = FindValueReply{} }
 func (m *FindValueReply) String() string { return proto.CompactTextString(m) }
 func (*FindValueReply) ProtoMessage()    {}
 func (*FindValueReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{9}
+	return fileDescriptor_616a434b24c97ff4, []int{12}
 }
 
 func (m *FindValueReply) XXX_Unmarshal(b []byte) error {
@@ -376,7 +493,7 @@ func (m *StoreRequest) Reset()         { *m = StoreRequest{} }
 func (m *StoreRequest) String() string { return proto.CompactTextString(m) }
 func (*StoreRequest) ProtoMessage()    {}
 func (*StoreRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{10}
+	return fileDescriptor_616a434b24c97ff4, []int{13}
 }
 
 func (m *StoreRequest) XXX_Unmarshal(b []byte) error {
@@ -407,7 +524,7 @@ func (m *StoreReply) Reset()         { *m = StoreReply{} }
 func (m *StoreReply) String() string { return proto.CompactTextString(m) }
 func (*StoreReply) ProtoMessage()    {}
 func (*StoreReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_616a434b24c97ff4, []int{11}
+	return fileDescriptor_616a434b24c97ff4, []int{14}
 }
 
 func (m *StoreReply) XXX_Unmarshal(b []byte) error {
@@ -429,10 +546,13 @@ func (m *StoreReply) XXX_DiscardUnknown() {
 var xxx_messageInfo_StoreReply proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*SuccessorRequest)(nil), "protos.SuccessorRequest")
-	proto.RegisterType((*SuccessorReply)(nil), "protos.SuccessorReply")
-	proto.RegisterType((*QueryRequest)(nil), "protos.QueryRequest")
-	proto.RegisterType((*QueryReply)(nil), "protos.QueryReply")
+	proto.RegisterType((*FindSuccessorRequest)(nil), "protos.FindSuccessorRequest")
+	proto.RegisterType((*FindSuccessorReply)(nil), "protos.FindSuccessorReply")
+	proto.RegisterType((*NotifyRequest)(nil), "protos.NotifyRequest")
+	proto.RegisterType((*GetRequest)(nil), "protos.GetRequest")
+	proto.RegisterType((*PutRequest)(nil), "protos.PutRequest")
+	proto.RegisterType((*DelRequest)(nil), "protos.DelRequest")
+	proto.RegisterType((*Result)(nil), "protos.Result")
 	proto.RegisterType((*PingRequest)(nil), "protos.PingRequest")
 	proto.RegisterType((*PingReply)(nil), "protos.PingReply")
 	proto.RegisterType((*FindNodeRequest)(nil), "protos.FindNodeRequest")
@@ -446,28 +566,33 @@ func init() {
 func init() { proto.RegisterFile("dht.proto", fileDescriptor_616a434b24c97ff4) }
 
 var fileDescriptor_616a434b24c97ff4 = []byte{
-	// 331 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x92, 0xcf, 0x4e, 0xb3, 0x40,
-	0x14, 0xc5, 0x4b, 0xfb, 0xf5, 0x8b, 0x9c, 0x52, 0x4a, 0xaf, 0x55, 0x1b, 0x56, 0x64, 0x56, 0xae,
-	0x1a, 0xd3, 0xee, 0x8c, 0x89, 0x8b, 0x1a, 0x63, 0xa2, 0x31, 0xda, 0x1a, 0xf7, 0xb5, 0x33, 0xb1,
-	0xa4, 0xa4, 0x20, 0x7f, 0x4c, 0x78, 0x66, 0x5f, 0xc2, 0x0c, 0x03, 0x0c, 0xa2, 0x2b, 0x98, 0x7b,
-	0x7f, 0xe7, 0x32, 0xe7, 0x70, 0x61, 0xf2, 0x5d, 0x3a, 0x8b, 0xe2, 0x30, 0x0d, 0xe9, 0x7f, 0xf1,
-	0x48, 0x98, 0x07, 0x67, 0x9d, 0x6d, 0xb7, 0x22, 0x49, 0xc2, 0x78, 0x25, 0x3e, 0x32, 0x91, 0xa4,
-	0x64, 0xc1, 0xd8, 0x4f, 0x0d, 0xcf, 0x38, 0x37, 0x57, 0xc6, 0x9e, 0x79, 0xb0, 0x1b, 0x44, 0x14,
-	0xe4, 0x64, 0xa3, 0xeb, 0xf3, 0x12, 0xe8, 0xfa, 0x9c, 0x79, 0xb0, 0x9e, 0x33, 0x11, 0xe7, 0x95,
-	0xde, 0x41, 0x6f, 0x2f, 0xf2, 0x12, 0x90, 0xaf, 0x8c, 0x01, 0x25, 0x21, 0xf5, 0x13, 0xf4, 0x3f,
-	0x37, 0x41, 0x26, 0x4a, 0x42, 0x1d, 0xd8, 0x10, 0x83, 0x27, 0xff, 0xf0, 0x5e, 0x0e, 0x61, 0x03,
-	0x98, 0xea, 0x18, 0x05, 0x39, 0x1b, 0x63, 0x74, 0xeb, 0x1f, 0xf8, 0x63, 0xc8, 0x45, 0xd5, 0x1f,
-	0x61, 0xa8, 0x4b, 0x92, 0x21, 0x38, 0xb2, 0xf0, 0x2a, 0x87, 0x55, 0x90, 0x03, 0xbb, 0x51, 0x93,
-	0x94, 0x0d, 0x6b, 0x9d, 0x86, 0x71, 0x4d, 0x58, 0x40, 0x79, 0x8e, 0x82, 0x7c, 0xfe, 0x80, 0xfe,
-	0x72, 0x17, 0xc6, 0x9c, 0x96, 0x6a, 0x7a, 0x6d, 0x9c, 0xa6, 0x2a, 0xb7, 0x64, 0xd6, 0x4e, 0xcb,
-	0x3d, 0xfd, 0xa3, 0x23, 0xbf, 0xd4, 0x99, 0x7f, 0x19, 0xe8, 0xdd, 0x6f, 0x38, 0x5d, 0xe0, 0x9f,
-	0xb4, 0x42, 0xc7, 0x15, 0xd9, 0xf0, 0xe9, 0x8e, 0x7f, 0x16, 0x0b, 0x25, 0x5d, 0xe1, 0xa8, 0x32,
-	0x47, 0x67, 0x15, 0xd0, 0x4a, 0xc0, 0x3d, 0xf9, 0xdd, 0x50, 0xea, 0x6b, 0x98, 0xb5, 0x6b, 0x7d,
-	0xf1, 0x76, 0x38, 0xfa, 0xe2, 0xad, 0x88, 0x3a, 0xb4, 0x40, 0xbf, 0x08, 0x85, 0x26, 0xb5, 0xb7,
-	0x46, 0x66, 0x2e, 0xb5, 0xaa, 0xca, 0xed, 0x25, 0x7a, 0x37, 0x77, 0x2f, 0x52, 0x5b, 0xfc, 0x6a,
-	0xad, 0x6d, 0xee, 0x86, 0xd6, 0xea, 0x7d, 0x60, 0x9d, 0x37, 0xb5, 0x8d, 0x8b, 0xef, 0x00, 0x00,
-	0x00, 0xff, 0xff, 0xd4, 0xe1, 0x5c, 0x71, 0xa1, 0x02, 0x00, 0x00,
+	// 407 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x93, 0x41, 0x6b, 0xe2, 0x40,
+	0x14, 0xc7, 0x8d, 0xd1, 0xb0, 0x79, 0x6a, 0xd4, 0xb7, 0xea, 0x4a, 0x58, 0x16, 0xc9, 0x61, 0x11,
+	0x16, 0x64, 0x57, 0x2f, 0x7b, 0x58, 0xd8, 0x43, 0xa5, 0x16, 0x04, 0x91, 0x58, 0x7a, 0xb7, 0xce,
+	0xb4, 0x86, 0x06, 0x93, 0x26, 0x93, 0x43, 0x3e, 0x41, 0x2f, 0xfd, 0xa6, 0xfd, 0x12, 0x65, 0x32,
+	0x4e, 0x32, 0x6a, 0x3c, 0x39, 0xef, 0xbd, 0xdf, 0x7f, 0x12, 0x7f, 0x33, 0x01, 0x93, 0xec, 0xd9,
+	0x24, 0x8c, 0x02, 0x16, 0xa0, 0x91, 0xfd, 0xc4, 0xce, 0x4f, 0xe8, 0xdd, 0x7a, 0x07, 0xb2, 0x49,
+	0x76, 0x3b, 0x1a, 0xc7, 0x41, 0xe4, 0xd2, 0xd7, 0x84, 0xc6, 0x0c, 0x2d, 0xa8, 0x7a, 0x64, 0xa8,
+	0x8d, 0xb4, 0x71, 0xd3, 0xad, 0x7a, 0xc4, 0xf9, 0x0b, 0x78, 0xc6, 0x85, 0x7e, 0x7a, 0x4e, 0x21,
+	0x42, 0x6d, 0x4b, 0x48, 0x34, 0xac, 0x8e, 0xb4, 0xb1, 0xe9, 0x66, 0x6b, 0x67, 0x06, 0xad, 0x55,
+	0xc0, 0xbc, 0xa7, 0xf4, 0xca, 0xd6, 0xa5, 0xa1, 0x1f, 0x00, 0x0b, 0xca, 0x64, 0xa2, 0x03, 0xfa,
+	0x0b, 0x4d, 0xb3, 0x88, 0xe9, 0xf2, 0xa5, 0xd3, 0x04, 0x58, 0x27, 0x72, 0xce, 0xab, 0x39, 0xf5,
+	0x65, 0x35, 0x02, 0xc3, 0xa5, 0x71, 0xe2, 0x33, 0x1c, 0x80, 0x11, 0x65, 0xab, 0x63, 0xf4, 0x58,
+	0x39, 0x2d, 0x68, 0xac, 0xbd, 0xc3, 0xb3, 0x0c, 0x34, 0xc0, 0x14, 0x65, 0xe8, 0xa7, 0x4e, 0x17,
+	0xda, 0xfc, 0x8f, 0xae, 0x02, 0x42, 0xe5, 0xbc, 0x0d, 0xad, 0xa2, 0xc5, 0x19, 0x84, 0x0e, 0x6f,
+	0x3c, 0x6c, 0xfd, 0x24, 0x87, 0x3a, 0x60, 0x29, 0x3d, 0x4e, 0x59, 0xd0, 0xdc, 0xb0, 0x20, 0xa2,
+	0xca, 0x5b, 0x1e, 0xeb, 0xd0, 0x4f, 0xa7, 0x6f, 0x1a, 0xd4, 0x6f, 0xf6, 0x41, 0x44, 0x70, 0x29,
+	0xb6, 0xcf, 0xd5, 0xe2, 0x77, 0x71, 0x46, 0xf1, 0xa4, 0xec, 0x64, 0x6c, 0xfb, 0xca, 0x94, 0x3f,
+	0xb2, 0x82, 0x7f, 0xc0, 0x10, 0xb6, 0xb1, 0x2f, 0xb9, 0x13, 0xfb, 0xb6, 0x25, 0xdb, 0xc2, 0x91,
+	0x53, 0x99, 0x7e, 0x68, 0xa0, 0x2f, 0xb7, 0x04, 0x7f, 0x43, 0x8d, 0x6b, 0xc0, 0xaf, 0x92, 0x50,
+	0x1c, 0xd9, 0xdd, 0xd3, 0xa6, 0x78, 0xd8, 0x3f, 0xf8, 0x22, 0xc5, 0xe0, 0x37, 0xf5, 0xb5, 0x14,
+	0x7b, 0x76, 0xff, 0x72, 0x20, 0xd2, 0xff, 0xc1, 0xcc, 0x8d, 0xe1, 0x50, 0xa5, 0x54, 0xb1, 0xf6,
+	0xa0, 0x64, 0x22, 0x36, 0x98, 0x41, 0x3d, 0x13, 0x8a, 0x3d, 0x89, 0xa8, 0xbe, 0x6d, 0x3c, 0xeb,
+	0x66, 0xa1, 0xe9, 0xbb, 0x06, 0xfa, 0xfc, 0xee, 0x1e, 0x7f, 0x81, 0xbe, 0xa0, 0x0c, 0x73, 0xa8,
+	0xb8, 0x6e, 0x97, 0x8a, 0x38, 0xbc, 0x4e, 0x14, 0xb8, 0xb8, 0x7b, 0xe5, 0xf0, 0x9c, 0xfa, 0x05,
+	0x5c, 0x5c, 0xcd, 0x4b, 0xf8, 0x51, 0x7c, 0x87, 0xb3, 0xcf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x74,
+	0x93, 0x68, 0xac, 0x9b, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -482,7 +607,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ChordClient interface {
-	FindSuccessor(ctx context.Context, in *SuccessorRequest, opts ...grpc.CallOption) (*SuccessorReply, error)
+	FindSuccessor(ctx context.Context, in *FindSuccessorRequest, opts ...grpc.CallOption) (*FindSuccessorReply, error)
+	Notify(ctx context.Context, in *NotifyRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
 type chordClient struct {
@@ -493,9 +619,18 @@ func NewChordClient(cc *grpc.ClientConn) ChordClient {
 	return &chordClient{cc}
 }
 
-func (c *chordClient) FindSuccessor(ctx context.Context, in *SuccessorRequest, opts ...grpc.CallOption) (*SuccessorReply, error) {
-	out := new(SuccessorReply)
+func (c *chordClient) FindSuccessor(ctx context.Context, in *FindSuccessorRequest, opts ...grpc.CallOption) (*FindSuccessorReply, error) {
+	out := new(FindSuccessorReply)
 	err := c.cc.Invoke(ctx, "/protos.Chord/FindSuccessor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chordClient) Notify(ctx context.Context, in *NotifyRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/protos.Chord/Notify", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -504,15 +639,19 @@ func (c *chordClient) FindSuccessor(ctx context.Context, in *SuccessorRequest, o
 
 // ChordServer is the server API for Chord service.
 type ChordServer interface {
-	FindSuccessor(context.Context, *SuccessorRequest) (*SuccessorReply, error)
+	FindSuccessor(context.Context, *FindSuccessorRequest) (*FindSuccessorReply, error)
+	Notify(context.Context, *NotifyRequest) (*Result, error)
 }
 
 // UnimplementedChordServer can be embedded to have forward compatible implementations.
 type UnimplementedChordServer struct {
 }
 
-func (*UnimplementedChordServer) FindSuccessor(ctx context.Context, req *SuccessorRequest) (*SuccessorReply, error) {
+func (*UnimplementedChordServer) FindSuccessor(ctx context.Context, req *FindSuccessorRequest) (*FindSuccessorReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindSuccessor not implemented")
+}
+func (*UnimplementedChordServer) Notify(ctx context.Context, req *NotifyRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Notify not implemented")
 }
 
 func RegisterChordServer(s *grpc.Server, srv ChordServer) {
@@ -520,7 +659,7 @@ func RegisterChordServer(s *grpc.Server, srv ChordServer) {
 }
 
 func _Chord_FindSuccessor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SuccessorRequest)
+	in := new(FindSuccessorRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -532,7 +671,25 @@ func _Chord_FindSuccessor_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/protos.Chord/FindSuccessor",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChordServer).FindSuccessor(ctx, req.(*SuccessorRequest))
+		return srv.(ChordServer).FindSuccessor(ctx, req.(*FindSuccessorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Chord_Notify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChordServer).Notify(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.Chord/Notify",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChordServer).Notify(ctx, req.(*NotifyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -544,6 +701,10 @@ var _Chord_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindSuccessor",
 			Handler:    _Chord_FindSuccessor_Handler,
+		},
+		{
+			MethodName: "Notify",
+			Handler:    _Chord_Notify_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -734,7 +895,9 @@ var _Kad_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type DHTClient interface {
-	Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryReply, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Result, error)
+	Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*Result, error)
+	Del(ctx context.Context, in *DelRequest, opts ...grpc.CallOption) (*Result, error)
 }
 
 type dHTClient struct {
@@ -745,9 +908,27 @@ func NewDHTClient(cc *grpc.ClientConn) DHTClient {
 	return &dHTClient{cc}
 }
 
-func (c *dHTClient) Query(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*QueryReply, error) {
-	out := new(QueryReply)
-	err := c.cc.Invoke(ctx, "/protos.DHT/Query", in, out, opts...)
+func (c *dHTClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/protos.DHT/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dHTClient) Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/protos.DHT/Put", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dHTClient) Del(ctx context.Context, in *DelRequest, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/protos.DHT/Del", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -756,35 +937,79 @@ func (c *dHTClient) Query(ctx context.Context, in *QueryRequest, opts ...grpc.Ca
 
 // DHTServer is the server API for DHT service.
 type DHTServer interface {
-	Query(context.Context, *QueryRequest) (*QueryReply, error)
+	Get(context.Context, *GetRequest) (*Result, error)
+	Put(context.Context, *PutRequest) (*Result, error)
+	Del(context.Context, *DelRequest) (*Result, error)
 }
 
 // UnimplementedDHTServer can be embedded to have forward compatible implementations.
 type UnimplementedDHTServer struct {
 }
 
-func (*UnimplementedDHTServer) Query(ctx context.Context, req *QueryRequest) (*QueryReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Query not implemented")
+func (*UnimplementedDHTServer) Get(ctx context.Context, req *GetRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (*UnimplementedDHTServer) Put(ctx context.Context, req *PutRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Put not implemented")
+}
+func (*UnimplementedDHTServer) Del(ctx context.Context, req *DelRequest) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Del not implemented")
 }
 
 func RegisterDHTServer(s *grpc.Server, srv DHTServer) {
 	s.RegisterService(&_DHT_serviceDesc, srv)
 }
 
-func _DHT_Query_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRequest)
+func _DHT_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DHTServer).Query(ctx, in)
+		return srv.(DHTServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protos.DHT/Query",
+		FullMethod: "/protos.DHT/Get",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DHTServer).Query(ctx, req.(*QueryRequest))
+		return srv.(DHTServer).Get(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DHT_Put_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DHTServer).Put(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.DHT/Put",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DHTServer).Put(ctx, req.(*PutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DHT_Del_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DHTServer).Del(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.DHT/Del",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DHTServer).Del(ctx, req.(*DelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -794,8 +1019,16 @@ var _DHT_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*DHTServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Query",
-			Handler:    _DHT_Query_Handler,
+			MethodName: "Get",
+			Handler:    _DHT_Get_Handler,
+		},
+		{
+			MethodName: "Put",
+			Handler:    _DHT_Put_Handler,
+		},
+		{
+			MethodName: "Del",
+			Handler:    _DHT_Del_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

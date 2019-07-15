@@ -22,9 +22,9 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.Query(ctx, &pb.QueryRequest{Key: "233"})
+	r, err := c.Get(ctx, &pb.GetRequest{Key: "233"})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %s", r.Value)
+	log.Printf("Greeting: %s", r.Result)
 }

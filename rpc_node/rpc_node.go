@@ -13,7 +13,7 @@ const (
 )
 
 func main() {
-	server := &node.DHTServer{}
+	server := &node.ChordServer{}
 	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

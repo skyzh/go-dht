@@ -3,17 +3,16 @@ package node
 import (
 	"context"
 	pb "github.com/skyzh/go-dht/protos"
-	"log"
 )
 
-type DHTServer struct {
+func (s *ChordServer) Get(ctx context.Context, in *pb.GetRequest) (*pb.Result, error) {
+	return &pb.Result{Result: "success"}, nil
 }
 
-func (s *DHTServer) FindSuccessor(ctx context.Context, in *pb.SuccessorRequest) (*pb.SuccessorReply, error) {
-	log.Printf("Received: %v", in.K)
-	return &pb.SuccessorReply{Id: "23333"}, nil
+func (s *ChordServer) Put(ctx context.Context, in *pb.PutRequest) (*pb.Result, error) {
+	return nil, nil
 }
 
-func (s *DHTServer) Query(ctx context.Context, in *pb.QueryRequest) (*pb.QueryReply, error) {
-	return &pb.QueryReply{Value: "2333"}, nil
+func (s *ChordServer) Del(ctx context.Context, in *pb.DelRequest) (*pb.Result, error) {
+	return nil, nil
 }
