@@ -6,11 +6,25 @@ import (
 	"math/big"
 )
 
-func generate_hash(s string) []byte {
+func generate_chord_hash(s string) []byte {
 	hasher := sha1.New()
 	hasher.Write([]byte(s))
 	bs := hasher.Sum(nil)
 	return bs[:M_bytes]
+}
+
+func generate_kad_hash(s string) []byte {
+	hasher := sha1.New()
+	hasher.Write([]byte(s))
+	return hasher.Sum(nil)
+}
+
+func xor_distance(a, b []byte) []byte {
+	c := make([]byte, len(a))
+	for i := range a {
+		c[i] = a[i] ^ b[i]
+	}
+	return c
 }
 
 func in_range(c, l, r []byte) bool {

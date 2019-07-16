@@ -15,7 +15,7 @@ import (
 func (s *ChordServer) Get(ctx context.Context, in *pb.Key) (*pb.Pair, error) {
 	logger := s.logger.WithFields(log.Fields{"op": "get", "key": in.Key})
 	logger.Tracef("request")
-	hash := generate_hash(in.Key)
+	hash := generate_chord_hash(in.Key)
 	node, err := s.ClosestPrecedingNode(ctx, hash)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (s *ChordServer) Get(ctx context.Context, in *pb.Key) (*pb.Pair, error) {
 func (s *ChordServer) Put(ctx context.Context, in *pb.Pair) (*pb.Result, error) {
 	logger := s.logger.WithFields(log.Fields{"op": "put", "key": in.Key})
 	logger.Tracef("request")
-	hash := generate_hash(in.Key)
+	hash := generate_chord_hash(in.Key)
 	node, err := s.ClosestPrecedingNode(ctx, hash)
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func (s *ChordServer) Put(ctx context.Context, in *pb.Pair) (*pb.Result, error) 
 func (s *ChordServer) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 	logger := s.logger.WithFields(log.Fields{"op": "del", "key": in.Key})
 	logger.Tracef("request")
-	hash := generate_hash(in.Key)
+	hash := generate_chord_hash(in.Key)
 	node, err := s.ClosestPrecedingNode(ctx, hash)
 	if err != nil {
 		return nil, err
@@ -129,7 +129,7 @@ func (n *ChordNode) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 	return result, nil
 }
 
-func Serve(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup, join *sync.WaitGroup) {
+func ServeChord(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup, join *sync.WaitGroup) {
 	logger := log.WithFields(log.Fields{"from": "serve", "id": fmt.Sprintf("%X", node.Id)})
 	defer group.Done()
 	server := NewChordServer(node.Address)

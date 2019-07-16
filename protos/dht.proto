@@ -38,27 +38,43 @@ message ControlRequest {
 // Kad RPCs
 
 message PingRequest {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message PingReply {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message FindNodeRequest {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message FindNodeReply {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message FindValueRequest {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message FindValueReply {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message StoreRequest {
+    bytes id = 1;
+    string addr = 2;
 }
 
 message StoreReply {
+    bytes id = 1;
+    string addr = 2;
 }
 
 service Chord {
@@ -71,7 +87,7 @@ service Chord {
     rpc FindPredecessor (Node) returns (Node) {
     }
 
-    rpc Ping(Node) returns (Void) {
+    rpc Ping (Node) returns (Void) {
     }
 }
 
@@ -99,7 +115,7 @@ service DHT {
     rpc Del (Key) returns (Result) {
     }
 
-    rpc Control(ControlRequest) returns (Result) {
+    rpc Control (ControlRequest) returns (Result) {
 
     }
 }

@@ -1,6 +1,7 @@
 package node
 
 import (
+	"bytes"
 	. "github.com/franela/goblin"
 	"math/big"
 	"testing"
@@ -8,11 +9,28 @@ import (
 
 func TestUtils(t *testing.T) {
 	g := Goblin(t)
-	g.Describe("generate_hash", func() {
+	g.Describe("generate_chord_hash", func() {
+		g.It("should generate M-bit hash", func() {
+			s := "127.0.0.1:23333"
+			h := generate_chord_hash(s)
+			g.Assert(len(h)).Equal(M_bytes)
+		})
+	})
+	g.Describe("generate_kad_hash", func() {
 		g.It("should generate 160-bit hash", func() {
 			s := "127.0.0.1:23333"
-			h := generate_hash(s)
-			g.Assert(len(h)).Equal(M_bytes)
+			h := generate_kad_hash(s)
+			g.Assert(len(h)).Equal(160 / 8)
+		})
+	})
+	g.Describe("xor_distance", func() {
+		g.It("should calculate distance", func() {
+			a := make([]byte, 20)
+			b := []byte("23333233332333323333")
+			g.Assert(string(xor_distance(a, b))).Equal(string(b))
+			a = []byte("23333233332333323333")
+			b = []byte("23333233332333323333")
+			g.Assert(bytes.Equal(xor_distance(a, b), []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})).IsTrue()
 		})
 	})
 	g.Describe("in_range", func() {

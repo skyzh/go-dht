@@ -41,14 +41,14 @@ func (s *ChordServer) successor() (*ChordNode) {
 
 func NewChordNode(addr string) *ChordNode {
 	return &ChordNode{
-		Id:      generate_hash(addr),
+		Id:      generate_chord_hash(addr),
 		Address: addr,
 	}
 }
 
 func NewChordServer(addr string) *ChordServer {
 	self := &ChordNode{
-		generate_hash(addr),
+		generate_chord_hash(addr),
 		addr,
 	}
 	finger := make([]*ChordNode, M)

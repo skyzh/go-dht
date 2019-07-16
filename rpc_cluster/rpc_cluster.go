@@ -28,10 +28,10 @@ func main() {
 		if i == 0 {
 			logger.Tracef("initial node %X listening at %v", nodes[i].Id, nodes[i].Address)
 			logger.Infof("initial node has been set up")
-			go node.Serve(nodes[i], nil, group, join_group)
+			go node.ServeChord(nodes[i], nil, group, join_group)
 		} else {
 			logger.Tracef("%X listening at %v bootstrapped with %X", nodes[i].Id, nodes[i].Address, nodes[0].Id)
-			go node.Serve(nodes[i], nodes[0], group, join_group)
+			go node.ServeChord(nodes[i], nodes[0], group, join_group)
 		}
 	}
 	logger.Infof("all nodes have been set up")

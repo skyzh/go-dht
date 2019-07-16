@@ -71,7 +71,7 @@ func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
 		addr = append(addr, fmt.Sprintf("127.0.0.1:%v", i+addr_base))
 	}
 	sort.SliceStable(addr, func(i, j int) bool {
-		return bytes.Compare(generate_hash(addr[i]), generate_hash(addr[j])) < 0
+		return bytes.Compare(generate_chord_hash(addr[i]), generate_chord_hash(addr[j])) < 0
 	})
 	for i := 0; i < n; i++ {
 		chord_servers = append(chord_servers, NewChordServer(addr[i]))
