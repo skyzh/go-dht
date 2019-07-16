@@ -9,6 +9,11 @@ import (
 	"sync"
 )
 
+const (
+	K = 20
+	ALPHA = 3
+)
+
 type KadNode struct {
 	Id      []byte
 	Address string

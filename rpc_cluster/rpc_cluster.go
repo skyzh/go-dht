@@ -4,15 +4,31 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/skyzh/go-dht/node"
+	"os"
+	"runtime/trace"
 	"sync"
 	"time"
 )
 
 const (
 	N = 50
+	trace_enabled = true
 )
 
 func main() {
+	if trace_enabled {
+		f, err := os.Create("trace.out")
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+
+		err = trace.Start(f)
+		if err != nil {
+			panic(err)
+		}
+		defer trace.Stop()
+	}
 	log.SetLevel(log.InfoLevel)
 	logger := log.WithFields(log.Fields{"from": "main"})
 	group := &sync.WaitGroup{}
