@@ -76,21 +76,27 @@ func (s *ChordServer) Serve(ctx context.Context) {
 			break
 		default:
 			{
-				err := s.Stabilize(ctx)
+				ctx_, cancel := context.WithTimeout(ctx, time.Second)
+				defer cancel()
+				err := s.Stabilize(ctx_)
 				if err != nil {
 					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond * 5)
 			}
 			{
-				err := s.CheckPredecessor(ctx)
+				ctx_, cancel := context.WithTimeout(ctx, time.Second)
+				defer cancel()
+				err := s.CheckPredecessor(ctx_)
 				if err != nil {
 					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond * 5)
 			}
 			{
-				err := s.FixFingers(ctx)
+				ctx_, cancel := context.WithTimeout(ctx, time.Second)
+				defer cancel()
+				err := s.FixFingers(ctx_)
 				if err != nil {
 					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}

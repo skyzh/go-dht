@@ -36,7 +36,7 @@ To run a single node,
 go run ./rpc_node
 ```
 
-To test key modification in cluster,
+To test key modification in cluster (put, query and delete 2000 entries),
 ```bash
 go run ./rpc_client
 ```
