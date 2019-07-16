@@ -3,6 +3,7 @@ package node
 import (
 	"context"
 	"errors"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
@@ -26,6 +27,8 @@ type ChordServer struct {
 	finger          []*ChordNode
 	fix_finger_next uint
 	mux             *sync.Mutex
+	logger          *log.Entry
+	storage         map[string]string
 }
 
 func (s *ChordServer) successor() (*ChordNode) {
@@ -59,6 +62,10 @@ func NewChordServer(addr string) *ChordServer {
 		finger,
 		0,
 		&sync.Mutex{},
+		log.WithFields(log.Fields{
+			"id": fmt.Sprintf("%X", self.Id),
+		}),
+		make(map[string]string),
 	}
 }
 
@@ -71,21 +78,21 @@ func (s *ChordServer) Serve(ctx context.Context) {
 			{
 				err := s.Stabilize(ctx)
 				if err != nil {
-					log.Warningf("%X routine error %v", s.self.Id, err)
+					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond)
 			}
 			{
 				err := s.CheckPredecessor(ctx)
 				if err != nil {
-					log.Warningf("%X routine error %v", s.self.Id, err)
+					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond)
 			}
 			{
 				err := s.FixFingers(ctx)
 				if err != nil {
-					log.Warningf("%X routine error %v", s.self.Id, err)
+					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond)
 			}

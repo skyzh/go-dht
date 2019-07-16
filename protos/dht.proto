@@ -15,14 +15,13 @@ message Node {
 
 // DHT Common RPCs
 
-message GetRequest {
+message Key {
     string key = 1;
 }
 
-message PutRequest {
-}
-
-message DelRequest {
+message Pair {
+    string key = 1;
+    string value = 2;
 }
 
 message Result {
@@ -30,6 +29,10 @@ message Result {
 }
 
 message Void {
+}
+
+message ControlRequest {
+    string control = 1;
 }
 
 // Kad RPCs
@@ -87,12 +90,16 @@ service Kad {
 }
 
 service DHT {
-    rpc Get (GetRequest) returns (Result) {
+    rpc Get (Key) returns (Pair) {
     }
 
-    rpc Put (PutRequest) returns (Result) {
+    rpc Put (Pair) returns (Result) {
     }
 
-    rpc Del (DelRequest) returns (Result) {
+    rpc Del (Key) returns (Result) {
+    }
+
+    rpc Control(ControlRequest) returns (Result) {
+
     }
 }
