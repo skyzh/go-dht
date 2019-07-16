@@ -23,7 +23,7 @@ func TestChordNode(t *testing.T) {
 	g.Describe("bootstrap", func() {
 		server := NewChordServer("127.0.0.1:23333")
 		g.It("should initialize node", func() {
-			g.Assert(len(server.self.id)).Eql(M_bytes)
+			g.Assert(len(server.self.Id)).Eql(M_bytes)
 			g.Assert(server.predecessor == nil).Eql(true)
 			g.Assert(server.successor()).Eql(server.self)
 		})
@@ -37,7 +37,7 @@ func TestChordRPC(t *testing.T) {
 		g.It("should be self single node network", func() {
 			node, err := server.FindSuccessor(context.Background(), &pb.FindSuccessorRequest{Id: test_id})
 			g.Assert(err == nil).IsTrue()
-			g.Assert(node.Id).Equal(server.self.id)
+			g.Assert(node.Id).Equal(server.self.Id)
 		})
 		g.It("should return given predecessor when start up", func() {
 			node, err := server.FindPredecessor(context.Background(), &pb.Node{Id: test_id, Addr: test_addr})
@@ -48,7 +48,7 @@ func TestChordRPC(t *testing.T) {
 }
 
 func run_server(s *grpc.Server, server *ChordServer, done chan bool) {
-	lis, err := net.Listen("tcp", server.self.address)
+	lis, err := net.Listen("tcp", server.self.Address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -106,8 +106,8 @@ func chord_system_test_join(g *G, n int) {
 	}
 	for i := range chord_servers {
 		g.Assert(chord_servers[i].successor() == nil).IsFalse()
-		id1 := chord_servers[i].successor().id
-		id2 := chord_servers[i].self.id
+		id1 := chord_servers[i].successor().Id
+		id2 := chord_servers[i].self.Id
 		if i != 0 {
 			g.Assert(bytes.Equal(id1, id2)).IsFalse()
 		}
@@ -141,8 +141,8 @@ func chord_system_test_stabilization(g *G, n int) {
 		g.Assert(chord_servers[i].predecessor == nil).IsFalse()
 		g.Assert(chord_servers[next_i].successor() == nil).IsFalse()
 		g.Assert(chord_servers[next_i].predecessor == nil).IsFalse()
-		g.Assert(bytes.Equal(chord_servers[next_i].predecessor.id, chord_servers[i].self.id)).IsTrue()
-		g.Assert(bytes.Equal(chord_servers[i].successor().id, chord_servers[next_i].self.id)).IsTrue()
+		g.Assert(bytes.Equal(chord_servers[next_i].predecessor.Id, chord_servers[i].self.Id)).IsTrue()
+		g.Assert(bytes.Equal(chord_servers[i].successor().Id, chord_servers[next_i].self.Id)).IsTrue()
 	}
 	cancel()
 	TeardownChordCluster(grpc_servers, chord_servers)
@@ -177,15 +177,15 @@ func chord_system_test_finger(g *G, n int) {
 	}
 	link_map := make(map[string]int)
 	for i := range chord_servers {
-		id := fmt.Sprintf("%X", chord_servers[i].self.id)
+		id := fmt.Sprintf("%X", chord_servers[i].self.Id)
 		link_map[id] = i
 	}
 	for i := range chord_servers {
-		prev_id := link_map[fmt.Sprintf("%X", chord_servers[i].finger[M - 1].id)]
+		prev_id := link_map[fmt.Sprintf("%X", chord_servers[i].finger[M - 1].Id)]
 		flag := false
 		for j:= 0; j < M; j++ {
 			next_j := (j + 1) % M
-			next_id := link_map[fmt.Sprintf("%X", chord_servers[i].finger[next_j].id)]
+			next_id := link_map[fmt.Sprintf("%X", chord_servers[i].finger[next_j].Id)]
 			if prev_id > next_id && !flag {
 				prev_id -= len(chord_servers)
 				flag = true

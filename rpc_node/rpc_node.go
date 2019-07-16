@@ -1,27 +1,11 @@
 package main
 
-import (
-	pb "github.com/skyzh/go-dht/protos"
-	"github.com/skyzh/go-dht/node"
-	"google.golang.org/grpc"
-	"log"
-	"net"
-)
+import "github.com/skyzh/go-dht/node"
 
 const (
 	address = "127.0.0.1:50051"
 )
 
 func main() {
-	server := &node.ChordServer{}
-	lis, err := net.Listen("tcp", address)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-	pb.RegisterChordServer(s, server)
-	pb.RegisterDHTServer(s, server)
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	node.Serve(address)
 }

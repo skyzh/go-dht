@@ -5,7 +5,9 @@ import (
 	"errors"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
+	"log"
 	"sync"
+	"time"
 )
 
 const (
@@ -14,8 +16,8 @@ const (
 )
 
 type ChordNode struct {
-	id      []byte
-	address string
+	Id      []byte
+	Address string
 }
 
 type ChordServer struct {
@@ -31,6 +33,13 @@ func (s *ChordServer) successor() (*ChordNode) {
 		return s.finger[0]
 	} else {
 		return nil
+	}
+}
+
+func NewChordNode(addr string) *ChordNode {
+	return &ChordNode{
+		Id:      generate_hash(addr),
+		Address: addr,
 	}
 }
 
@@ -53,11 +62,43 @@ func NewChordServer(addr string) *ChordServer {
 	}
 }
 
+func (s *ChordServer) Serve(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			break
+		default:
+			{
+				err := s.Stabilize(ctx)
+				if err != nil {
+					log.Printf("error: %v", err)
+				}
+				time.Sleep(time.Millisecond)
+			}
+			{
+				err := s.CheckPredecessor(ctx)
+				if err != nil {
+					log.Printf("error: %v", err)
+				}
+				time.Sleep(time.Millisecond)
+			}
+			{
+				err := s.FixFingers(ctx)
+				if err != nil {
+					log.Printf("error: %v", err)
+				}
+				time.Sleep(time.Millisecond)
+			}
+		}
+	}
+
+}
+
 func (s *ChordServer) FindSuccessor(ctx context.Context, in *pb.FindSuccessorRequest) (*pb.Node, error) {
 	s.mux.Lock()
-	if in_range(in.Id, s.self.id, s.successor().id) {
+	if in_range(in.Id, s.self.Id, s.successor().Id) {
 		defer s.mux.Unlock()
-		return &pb.Node{Id: s.successor().id, Addr: s.successor().address}, nil
+		return &pb.Node{Id: s.successor().Id, Addr: s.successor().Address}, nil
 	} else {
 		s.mux.Unlock()
 		n, err := s.ClosestPrecedingNode(ctx, in.Id)
@@ -68,7 +109,7 @@ func (s *ChordServer) FindSuccessor(ctx context.Context, in *pb.FindSuccessorReq
 		if err != nil {
 			return nil, err
 		}
-		return &pb.Node{Id: node.id, Addr: node.address}, nil
+		return &pb.Node{Id: node.Id, Addr: node.Address}, nil
 	}
 }
 
@@ -77,7 +118,7 @@ func (s *ChordServer) Join(ctx context.Context, node *ChordNode) error {
 	s.predecessor = nil
 	s.mux.Unlock()
 
-	node, err := node.FindSuccessor(ctx, s.self.id)
+	node, err := node.FindSuccessor(ctx, s.self.Id)
 	if err != nil {
 		return err
 	}
@@ -93,7 +134,7 @@ func (s *ChordServer) Stabilize(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if in_range_exclude(x.id, s.self.id, s.successor().id) {
+	if in_range_exclude(x.Id, s.self.Id, s.successor().Id) {
 		s.finger[0] = x
 	}
 	err = s.successor().Notify(ctx, s.self)
@@ -107,7 +148,7 @@ func (s *ChordServer) Notify(ctx context.Context, in *pb.Node) (*pb.Result, erro
 	s.mux.Lock()
 	defer s.mux.Unlock()
 	if s.predecessor == nil ||
-		in_range_exclude(in.Id, s.predecessor.id, s.self.id) {
+		in_range_exclude(in.Id, s.predecessor.Id, s.self.Id) {
 		s.predecessor = &ChordNode{in.Id, in.Addr}
 	}
 	return &pb.Result{Result: "success"}, nil
@@ -123,7 +164,7 @@ func (s *ChordServer) FindPredecessor(ctx context.Context, in *pb.Node) (*pb.Nod
 	if s.predecessor == nil {
 		return nil, errors.New("no predecessor")
 	}
-	return &pb.Node{Id: s.predecessor.id, Addr: s.predecessor.address}, nil
+	return &pb.Node{Id: s.predecessor.Id, Addr: s.predecessor.Address}, nil
 }
 
 func (s *ChordServer) Ping(ctx context.Context, in *pb.Node) (*pb.Void, error) {
@@ -138,7 +179,7 @@ func (s *ChordServer) FixFingers(ctx context.Context) error {
 	}
 	next := s.fix_finger_next
 	s.mux.Unlock()
-	x, err := s.FindSuccessor(ctx, &pb.FindSuccessorRequest{Id: byte_add_power_2(s.self.id, s.fix_finger_next)})
+	x, err := s.FindSuccessor(ctx, &pb.FindSuccessorRequest{Id: byte_add_power_2(s.self.Id, s.fix_finger_next)})
 	if err != nil {
 		return err
 	}
@@ -149,6 +190,12 @@ func (s *ChordServer) FixFingers(ctx context.Context) error {
 }
 
 func (s *ChordServer) CheckPredecessor(ctx context.Context) error {
+	_, err := s.Notify(ctx, &pb.Node{Id: s.self.Id, Addr: s.self.Address})
+	if err != nil {
+		s.mux.Lock()
+		defer s.mux.Unlock()
+		s.predecessor = nil
+	}
 	return nil
 }
 
@@ -157,7 +204,7 @@ func (s *ChordServer) ClosestPrecedingNode(ctx context.Context, id []byte) (*Cho
 		if s.finger[i] == nil {
 			continue
 		}
-		if in_range_exclude(s.finger[i].id, s.self.id, id) {
+		if in_range_exclude(s.finger[i].Id, s.self.Id, id) {
 			return s.finger[i], nil
 		}
 	}
@@ -165,7 +212,7 @@ func (s *ChordServer) ClosestPrecedingNode(ctx context.Context, id []byte) (*Cho
 }
 
 func (n *ChordNode) FindSuccessor(ctx context.Context, id []byte) (*ChordNode, error) {
-	conn, err := grpc.Dial(n.address, grpc.WithInsecure())
+	conn, err := grpc.Dial(n.Address, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +226,13 @@ func (n *ChordNode) FindSuccessor(ctx context.Context, id []byte) (*ChordNode, e
 }
 
 func (n *ChordNode) FindPredecessor(ctx context.Context, self *ChordNode) (*ChordNode, error) {
-	conn, err := grpc.Dial(n.address, grpc.WithInsecure())
+	conn, err := grpc.Dial(n.Address, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
 	defer conn.Close()
 	c := pb.NewChordClient(conn)
-	r, err := c.FindPredecessor(ctx, &pb.Node{Id: self.id, Addr: self.address})
+	r, err := c.FindPredecessor(ctx, &pb.Node{Id: self.Id, Addr: self.Address})
 	if err != nil {
 		return nil, err
 	}
@@ -193,13 +240,13 @@ func (n *ChordNode) FindPredecessor(ctx context.Context, self *ChordNode) (*Chor
 }
 
 func (n *ChordNode) Notify(ctx context.Context, self *ChordNode) error {
-	conn, err := grpc.Dial(n.address, grpc.WithInsecure())
+	conn, err := grpc.Dial(n.Address, grpc.WithInsecure())
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
 	c := pb.NewChordClient(conn)
-	_, err = c.Notify(ctx, &pb.Node{Id: self.id, Addr: self.address})
+	_, err = c.Notify(ctx, &pb.Node{Id: self.Id, Addr: self.Address})
 	if err != nil {
 		return err
 	}
