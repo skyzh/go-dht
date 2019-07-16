@@ -161,7 +161,9 @@ func Serve(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup, jo
 			time.Sleep(time.Second)
 		}
 	}
-	join.Done()
+	if join != nil {
+		join.Done()
+	}
 	<-ch
 	cancel()
 }

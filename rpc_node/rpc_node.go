@@ -12,6 +12,6 @@ const (
 func main() {
 	group := &sync.WaitGroup{}
 	group.Add(1)
-	node.Serve(node.NewChordNode(address), nil, group)
+	node.Serve(node.NewChordNode(address), nil, group, nil)
 	group.Wait()
 }
