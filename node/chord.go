@@ -80,21 +80,21 @@ func (s *ChordServer) Serve(ctx context.Context) {
 				if err != nil {
 					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
-				time.Sleep(time.Millisecond)
+				time.Sleep(time.Millisecond * 5)
 			}
 			{
 				err := s.CheckPredecessor(ctx)
 				if err != nil {
 					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
-				time.Sleep(time.Millisecond)
+				time.Sleep(time.Millisecond * 5)
 			}
 			{
 				err := s.FixFingers(ctx)
 				if err != nil {
 					s.logger.Warningf("%X routine error %v", s.self.Id, err)
 				}
-				time.Sleep(time.Millisecond)
+				time.Sleep(time.Millisecond * 5)
 			}
 		}
 	}

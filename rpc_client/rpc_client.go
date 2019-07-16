@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	N               = 2000
+	N               = 50
 	CONCURRENT_JOBS = 10
-	TOTAL_KEYS      = 50
+	TOTAL_KEYS      = 2000
 )
 
 func generate_pairs() map[string]string {
