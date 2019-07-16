@@ -80,7 +80,7 @@ func (s *ChordServer) Serve(ctx context.Context) {
 				defer cancel()
 				err := s.Stabilize(ctx_)
 				if err != nil {
-					s.logger.Warningf("%X routine error %v", s.self.Id, err)
+					s.logger.Warningf("Stabilize routine error %v", err)
 				}
 				time.Sleep(time.Millisecond * 5)
 			}
@@ -89,7 +89,7 @@ func (s *ChordServer) Serve(ctx context.Context) {
 				defer cancel()
 				err := s.CheckPredecessor(ctx_)
 				if err != nil {
-					s.logger.Warningf("%X routine error %v", s.self.Id, err)
+					s.logger.Warningf("CheckPredecessor routine error %v", err)
 				}
 				time.Sleep(time.Millisecond * 5)
 			}
@@ -98,7 +98,7 @@ func (s *ChordServer) Serve(ctx context.Context) {
 				defer cancel()
 				err := s.FixFingers(ctx_)
 				if err != nil {
-					s.logger.Warningf("%X routine error %v", s.self.Id, err)
+					s.logger.Warningf("FixFingers routine error %v", err)
 				}
 				time.Sleep(time.Millisecond * 5)
 			}
