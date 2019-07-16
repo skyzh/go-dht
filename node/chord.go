@@ -76,30 +76,36 @@ func (s *ChordServer) Serve(ctx context.Context) {
 			break
 		default:
 			{
-				ctx_, cancel := context.WithTimeout(ctx, time.Second)
-				defer cancel()
-				err := s.Stabilize(ctx_)
-				if err != nil {
-					s.logger.Warningf("Stabilize routine error %v", err)
-				}
+				func() {
+					ctx_, cancel := context.WithTimeout(ctx, time.Second)
+					defer cancel()
+					err := s.Stabilize(ctx_)
+					if err != nil {
+						s.logger.Warningf("Stabilize routine error %v", err)
+					}
+				}()
 				time.Sleep(time.Millisecond * 5)
 			}
 			{
-				ctx_, cancel := context.WithTimeout(ctx, time.Second)
-				defer cancel()
-				err := s.CheckPredecessor(ctx_)
-				if err != nil {
-					s.logger.Warningf("CheckPredecessor routine error %v", err)
-				}
+				func() {
+					ctx_, cancel := context.WithTimeout(ctx, time.Second)
+					defer cancel()
+					err := s.CheckPredecessor(ctx_)
+					if err != nil {
+						s.logger.Warningf("CheckPredecessor routine error %v", err)
+					}
+				}()
 				time.Sleep(time.Millisecond * 5)
 			}
 			{
-				ctx_, cancel := context.WithTimeout(ctx, time.Second)
-				defer cancel()
-				err := s.FixFingers(ctx_)
-				if err != nil {
-					s.logger.Warningf("FixFingers routine error %v", err)
-				}
+				func() {
+					ctx_, cancel := context.WithTimeout(ctx, time.Second)
+					defer cancel()
+					err := s.FixFingers(ctx_)
+					if err != nil {
+						s.logger.Warningf("FixFingers routine error %v", err)
+					}
+				} ()
 				time.Sleep(time.Millisecond * 5)
 			}
 		}
