@@ -14,14 +14,14 @@ import (
 
 func (s *ChordServer) Get(ctx context.Context, in *pb.Key) (*pb.Pair, error) {
 	logger := s.logger.WithFields(log.Fields{"op": "get", "key": in.Key})
-	logger.Infof("request")
+	logger.Tracef("request")
 	hash := generate_hash(in.Key)
 	node, err := s.ClosestPrecedingNode(ctx, hash)
 	if err != nil {
 		return nil, err
 	}
 	if node == nil {
-		logger.Infof("key belongs to %X", s.self.Id)
+		logger.Tracef("key belongs to %X", s.self.Id)
 		val, ok := s.storage[in.Key]
 		if !ok {
 			return nil, errors.New("key not found")
@@ -29,41 +29,41 @@ func (s *ChordServer) Get(ctx context.Context, in *pb.Key) (*pb.Pair, error) {
 			return &pb.Pair{Key: in.Key, Value: val}, nil
 		}
 	} else {
-		logger.Infof("forwarding request to %X", node.Id)
+		logger.Tracef("forwarding request to %X", node.Id)
 		return node.Get(ctx, in)
 	}
 }
 
 func (s *ChordServer) Put(ctx context.Context, in *pb.Pair) (*pb.Result, error) {
 	logger := s.logger.WithFields(log.Fields{"op": "put", "key": in.Key})
-	logger.Infof("request")
+	logger.Tracef("request")
 	hash := generate_hash(in.Key)
 	node, err := s.ClosestPrecedingNode(ctx, hash)
 	if err != nil {
 		return nil, err
 	}
 	if node == nil {
-		logger.Infof("key belongs to %X", s.self.Id)
+		logger.Tracef("key belongs to %X", s.self.Id)
 		s.mux.Lock()
 		defer s.mux.Unlock()
 		s.storage[in.Key] = in.Value
 		return &pb.Result{Result: "success"}, nil
 	} else {
-		logger.Infof("forwarding request to %X", node.Id)
+		logger.Tracef("forwarding request to %X", node.Id)
 		return node.Put(ctx, in)
 	}
 }
 
 func (s *ChordServer) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 	logger := s.logger.WithFields(log.Fields{"op": "del", "key": in.Key})
-	logger.Infof("request")
+	logger.Tracef("request")
 	hash := generate_hash(in.Key)
 	node, err := s.ClosestPrecedingNode(ctx, hash)
 	if err != nil {
 		return nil, err
 	}
 	if node == nil {
-		logger.Infof("key belongs to %X", s.self.Id)
+		logger.Tracef("key belongs to %X", s.self.Id)
 		s.mux.Lock()
 		defer s.mux.Unlock()
 		_, ok := s.storage[in.Key]
@@ -74,7 +74,7 @@ func (s *ChordServer) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 			return &pb.Result{Result: "success"}, nil
 		}
 	} else {
-		logger.Infof("forwarding request to %X", node.Id)
+		logger.Tracef("forwarding request to %X", node.Id)
 		return node.Del(ctx, in)
 	}
 }
@@ -129,7 +129,7 @@ func (n *ChordNode) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 	return result, nil
 }
 
-func Serve(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup) {
+func Serve(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup, join *sync.WaitGroup) {
 	logger := log.WithFields(log.Fields{"from": "serve", "id": fmt.Sprintf("%X", node.Id)})
 	defer group.Done()
 	server := NewChordServer(node.Address)
@@ -155,12 +155,13 @@ func Serve(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup) {
 			if err != nil {
 				logger.Warningf("%X failed to join %X at %v, retrying...", node.Id, bootstrap_node.Id, bootstrap_node.Address)
 			} else {
-				logger.Infof("%X joined successfully", node.Id)
+				logger.Tracef("%X joined successfully", node.Id)
 				break
 			}
 			time.Sleep(time.Second)
 		}
 	}
+	join.Done()
 	<-ch
 	cancel()
 }

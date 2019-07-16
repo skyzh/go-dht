@@ -13,8 +13,10 @@ const (
 )
 
 func main() {
+	log.SetLevel(log.InfoLevel)
 	logger := log.WithFields(log.Fields{"from": "main"})
 	group := &sync.WaitGroup{}
+	join_group := &sync.WaitGroup{}
 	var nodes []*node.ChordNode
 	for i := 0; i < N; i++ {
 		addr := fmt.Sprintf("127.0.0.1:%d", 40000+i)
@@ -22,16 +24,21 @@ func main() {
 	}
 	for i := 0; i < N; i++ {
 		group.Add(1)
+		join_group.Add(1)
 		if i == 0 {
-			logger.Infof("initial node %X listening at %v", nodes[i].Id, nodes[i].Address)
-			go node.Serve(nodes[i], nil, group)
+			logger.Tracef("initial node %X listening at %v", nodes[i].Id, nodes[i].Address)
+			logger.Infof("initial node has been set up")
+			go node.Serve(nodes[i], nil, group, join_group)
 		} else {
-			logger.Infof("%X listening at %v bootstrapped with %X", nodes[i].Id, nodes[i].Address, nodes[0].Id)
-			go node.Serve(nodes[i], nodes[0], group)
+			logger.Tracef("%X listening at %v bootstrapped with %X", nodes[i].Id, nodes[i].Address, nodes[0].Id)
+			go node.Serve(nodes[i], nodes[0], group, join_group)
 		}
 	}
+	logger.Infof("all nodes have been set up")
 	go func() {
 		time.Sleep(time.Second)
 	} ()
+	join_group.Wait()
+	logger.Infof("all nodes have joined network")
 	group.Wait()
 }
