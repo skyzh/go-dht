@@ -8,11 +8,11 @@ import (
 
 func TestUtils(t *testing.T) {
 	g := Goblin(t)
-	g.Describe("generate_sha1", func() {
+	g.Describe("generate_hash", func() {
 		g.It("should generate 160-bit hash", func() {
 			s := "127.0.0.1:23333"
-			h := generate_sha1(s)
-			g.Assert(len(h)).Equal(160 / 8)
+			h := generate_hash(s)
+			g.Assert(len(h)).Equal(M_bytes)
 		})
 	})
 	g.Describe("in_range", func() {
@@ -76,7 +76,9 @@ func TestUtils(t *testing.T) {
 			b.SetBytes(byte_add_power_2(a.Bytes(), 10))
 			g.Assert(b.Cmp(big.NewInt(233+1024)) == 0).IsTrue()
 			b.SetBytes(byte_add_power_2(a.Bytes(), 16))
-			g.Assert(b.Cmp(big.NewInt(233+65536)) == 0).IsTrue()
+			if M > 16 {
+				g.Assert(b.Cmp(big.NewInt(233+65536)) == 0).IsTrue()
+			}
 		})
 		g.It("should add beyond bound", func() {
 			a := big.NewInt(233)

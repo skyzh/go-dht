@@ -6,11 +6,11 @@ import (
 	"math/big"
 )
 
-func generate_sha1(s string) []byte {
+func generate_hash(s string) []byte {
 	hasher := sha1.New()
 	hasher.Write([]byte(s))
 	bs := hasher.Sum(nil)
-	return bs
+	return bs[:M_bytes]
 }
 
 func in_range(c, l, r []byte) bool {

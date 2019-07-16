@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	M       = 160
+	M       = 16
 	M_bytes = M / 8
 )
 
@@ -36,13 +36,18 @@ func (s *ChordServer) successor() (*ChordNode) {
 
 func NewChordServer(addr string) *ChordServer {
 	self := &ChordNode{
-		generate_sha1(addr),
+		generate_hash(addr),
 		addr,
+	}
+	finger := make([]*ChordNode, M)
+	finger[0] = self
+	for i := 1; i < M; i++ {
+		finger[i] = nil
 	}
 	return &ChordServer{
 		self,
 		nil,
-		[]*ChordNode{self},
+		finger,
 		0,
 		&sync.Mutex{},
 	}
@@ -131,13 +136,14 @@ func (s *ChordServer) FixFingers(ctx context.Context) error {
 	if s.fix_finger_next >= M {
 		s.fix_finger_next = 0
 	}
+	next := s.fix_finger_next
 	s.mux.Unlock()
 	x, err := s.FindSuccessor(ctx, &pb.FindSuccessorRequest{Id: byte_add_power_2(s.self.id, s.fix_finger_next)})
 	if err != nil {
 		return err
 	}
 	s.mux.Lock()
-	s.finger[s.fix_finger_next] = &ChordNode{x.Id, x.Addr}
+	s.finger[next] = &ChordNode{x.Id, x.Addr}
 	defer s.mux.Unlock()
 	return nil
 }
@@ -148,6 +154,9 @@ func (s *ChordServer) CheckPredecessor(ctx context.Context) error {
 
 func (s *ChordServer) ClosestPrecedingNode(ctx context.Context, id []byte) (*ChordNode, error) {
 	for i := M - 1; i >= 0; i-- {
+		if s.finger[i] == nil {
+			continue
+		}
 		if in_range_exclude(s.finger[i].id, s.self.id, id) {
 			return s.finger[i], nil
 		}
