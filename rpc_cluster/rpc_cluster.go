@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	N = 50
+	N             = 50
 	trace_enabled = true
 )
 
@@ -53,8 +53,21 @@ func main() {
 	logger.Infof("all nodes have been set up")
 	go func() {
 		time.Sleep(time.Second)
-	} ()
+	}()
 	join_group.Wait()
 	logger.Infof("all nodes have joined network")
-	group.Wait()
+	c := make(chan bool)
+	go func() {
+		group.Wait()
+		c <- true
+	}()
+	timeout := time.Duration(30) * time.Second
+	fmt.Printf("Exit after %s\n", timeout)
+	select {
+	case <-c:
+		fmt.Printf("Wait group finished\n")
+	case <-time.After(timeout):
+		fmt.Printf("Timed out waiting for wait group\n")
+	}
+	fmt.Printf("Free at last\n")
 }
