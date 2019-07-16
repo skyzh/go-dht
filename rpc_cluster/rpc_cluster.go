@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"github.com/skyzh/go-dht/node"
-	"log"
 	"sync"
 )
 
@@ -17,7 +17,7 @@ func main() {
 	}
 	for i := 0; i < N; i++ {
 		group.Add(1)
-		log.Printf("%X listening at %v", nodes[i].Id, nodes[i].Address)
+		log.Infof("%X listening at %v", nodes[i].Id, nodes[i].Address)
 		if i == 0 {
 			go node.Serve(nodes[i], nil, group)
 		} else {

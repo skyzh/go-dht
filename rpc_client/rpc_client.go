@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
+	log "github.com/sirupsen/logrus"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
-	"log"
 	"time"
 )
 

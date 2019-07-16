@@ -2,9 +2,9 @@ package node
 
 import (
 	"context"
+	log "github.com/sirupsen/logrus"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 	"sync"
 	"time"
@@ -45,9 +45,9 @@ func Serve(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup) {
 		for {
 			err := server.Join(ctx, bootstrap_node)
 			if err != nil {
-				log.Printf("%X failed to join %X at %v, retrying...", node.Id, bootstrap_node.Id, bootstrap_node.Address)
+				log.Warningf("%X failed to join %X at %v, retrying...", node.Id, bootstrap_node.Id, bootstrap_node.Address)
 			} else {
-				log.Printf("%X joined successfully", node.Id)
+				log.Infof("%X joined successfully", node.Id)
 				break
 			}
 			time.Sleep(time.Second)

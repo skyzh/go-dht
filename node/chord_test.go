@@ -5,9 +5,9 @@ import (
 	"context"
 	"fmt"
 	. "github.com/franela/goblin"
+	log "github.com/sirupsen/logrus"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
-	"log"
 	"math/rand"
 	"net"
 	"sort"
@@ -61,7 +61,7 @@ func run_server(s *grpc.Server, server *ChordServer, done chan bool) {
 }
 
 func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
-	log.Printf("making clusters of %d nodes", n)
+	log.Infof("making clusters of %d nodes", n)
 	done := make(chan bool)
 	var chord_servers []*ChordServer
 	var grpc_servers [] *grpc.Server
@@ -81,16 +81,16 @@ func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
 	for i := 0; i < n; i++ {
 		<-done
 	}
-	log.Printf("... done")
+	log.Infof("... done")
 	return grpc_servers, chord_servers
 }
 
 func TeardownChordCluster(grpc_servers []*grpc.Server, chord_servers []*ChordServer) {
-	log.Printf("tearing down")
+	log.Infof("tearing down")
 	for i := range grpc_servers {
 		grpc_servers[i].Stop()
 	}
-	log.Printf("... done")
+	log.Infof("... done")
 }
 
 func chord_system_test_join(g *G, n int) {

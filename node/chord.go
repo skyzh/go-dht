@@ -3,9 +3,9 @@ package node
 import (
 	"context"
 	"errors"
+	log "github.com/sirupsen/logrus"
 	pb "github.com/skyzh/go-dht/protos"
 	"google.golang.org/grpc"
-	"log"
 	"sync"
 	"time"
 )
@@ -71,21 +71,21 @@ func (s *ChordServer) Serve(ctx context.Context) {
 			{
 				err := s.Stabilize(ctx)
 				if err != nil {
-					log.Printf("error: %v", err)
+					log.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond)
 			}
 			{
 				err := s.CheckPredecessor(ctx)
 				if err != nil {
-					log.Printf("error: %v", err)
+					log.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond)
 			}
 			{
 				err := s.FixFingers(ctx)
 				if err != nil {
-					log.Printf("error: %v", err)
+					log.Warningf("%X routine error %v", s.self.Id, err)
 				}
 				time.Sleep(time.Millisecond)
 			}
