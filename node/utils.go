@@ -19,7 +19,6 @@ func in_range(c, l, r []byte) bool {
 	} else {
 		return bytes.Compare(l, c) < 0 || bytes.Compare(c, r) <= 0
 	}
-	return true
 }
 
 func in_range_exclude(c, l, r []byte) bool {
