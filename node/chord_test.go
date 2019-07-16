@@ -66,7 +66,7 @@ func MakeChordCluster(n int) ([]*grpc.Server, []*ChordServer) {
 	var chord_servers []*ChordServer
 	var grpc_servers [] *grpc.Server
 	var addr []string
-	addr_base := rand.Intn(1000) + 50000
+	addr_base := rand.Intn(1000) + 30000
 	for i := 0; i < n; i++ {
 		addr = append(addr, fmt.Sprintf("127.0.0.1:%v", i+addr_base))
 	}

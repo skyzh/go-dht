@@ -44,6 +44,9 @@ func (s *ChordServer) Put(ctx context.Context, in *pb.Pair) (*pb.Result, error) 
 	}
 	if node == nil {
 		logger.Infof("key belongs to %X", s.self.Id)
+		s.mux.Lock()
+		defer s.mux.Unlock()
+		s.storage[in.Key] = in.Value
 		return &pb.Result{Result: "success"}, nil
 	} else {
 		logger.Infof("forwarding request to %X", node.Id)
@@ -61,7 +64,15 @@ func (s *ChordServer) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 	}
 	if node == nil {
 		logger.Infof("key belongs to %X", s.self.Id)
-		return &pb.Result{Result: "success"}, nil
+		s.mux.Lock()
+		defer s.mux.Unlock()
+		_, ok := s.storage[in.Key]
+		if !ok {
+			return nil, errors.New("key not found")
+		} else {
+			delete(s.storage, in.Key)
+			return &pb.Result{Result: "success"}, nil
+		}
 	} else {
 		logger.Infof("forwarding request to %X", node.Id)
 		return node.Del(ctx, in)
@@ -69,6 +80,10 @@ func (s *ChordServer) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 }
 
 func (s *ChordServer) Control(ctx context.Context, in *pb.ControlRequest) (*pb.Result, error) {
+	if in.Control == "quit" {
+	}
+	if in.Control == "join" {
+	}
 	return &pb.Result{Result: "success"}, nil
 }
 
