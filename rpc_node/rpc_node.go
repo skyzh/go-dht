@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/skyzh/go-dht/node"
 	"sync"
 )
@@ -12,6 +13,6 @@ const (
 func main() {
 	group := &sync.WaitGroup{}
 	group.Add(1)
-	node.ServeChord(node.NewChordNode(address), nil, group, nil)
+	node.ServeChord(context.Background(), node.NewChordNode(address), nil, group, nil)
 	group.Wait()
 }

@@ -129,26 +129,36 @@ func (n *ChordNode) Del(ctx context.Context, in *pb.Key) (*pb.Result, error) {
 	return result, nil
 }
 
-func ServeChord(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup, join *sync.WaitGroup) {
+func ServeChord(ctx context.Context, node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGroup, join *sync.WaitGroup) {
+	// setup logger
 	logger := log.WithFields(log.Fields{"from": "serve", "id": fmt.Sprintf("%X", node.Id)})
 	defer group.Done()
+	// setup Chord instances
 	server := NewChordServer(node.Address)
 	lis, err := net.Listen("tcp", node.Address)
 	if err != nil {
 		logger.Fatalf("failed to listen: %v", err)
 	}
+	// setup gRPC
 	s := grpc.NewServer()
 	pb.RegisterChordServer(s, server)
 	pb.RegisterDHTServer(s, server)
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 	ch := make(chan bool)
+
+	// begin background tasks
 	go server.Serve(ctx)
+
+	// handle RPCs
 	go func() {
 		if err := s.Serve(lis); err != nil {
 			logger.Fatalf("failed to serve: %v", err)
 		}
 		ch <- true
 	}()
+
+	// bootstrap node
 	if bootstrap_node != nil {
 		for {
 			err := server.Join(ctx, bootstrap_node)
@@ -161,9 +171,18 @@ func ServeChord(node *ChordNode, bootstrap_node *ChordNode, group *sync.WaitGrou
 			time.Sleep(time.Second)
 		}
 	}
+
+	// node has joined
 	if join != nil {
 		join.Done()
 	}
-	<-ch
-	cancel()
+
+	// stop listening if context is done
+	select {
+	case <-ch:
+		return
+	case <-ctx.Done():
+		s.Stop()
+		return
+	}
 }
